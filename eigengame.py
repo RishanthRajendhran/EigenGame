@@ -3,11 +3,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 import os.path
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.animation import FuncAnimation
 
-xDim = (100000, 4)
+xDim = (3, 7)
 numIterations = 10000
-k = 4
-learningRate = 0.000011
+k = 3
+learningRate = 0.001
 
 #Function to return the distance measure 
 # between current player positions (current eigenvalues) 
@@ -73,7 +75,7 @@ def getPenalty(X, V, i):
         if "-modified" in sys.argv:
             condition = j != i
         if condition:
-            penalty += (np.dot(np.dot(X, V[:,i]), np.dot(X, V[:,j]))/np.dot(np.dot(X, V[:,j]), np.dot(X, V[:,j])))*np.dot(X,V[:,j]).reshape(-1,1)
+            penalty += 10*(np.dot(np.dot(X, V[:,i]), np.dot(X, V[:,j]))/np.dot(np.dot(X, V[:,j]), np.dot(X, V[:,j])))*np.dot(X,V[:,j]).reshape(-1,1)
     return penalty.reshape(-1, 1)
 
 #Function to return the penalty
@@ -190,20 +192,30 @@ elif not (os.path.exists("./X.npy") and os.path.isfile("./X.npy")):
     print("Last game's dataset not found!\nStarting new game with new dataset...")
 
 #Load dataset X from "./X.npy"
-X = np.load("./X.npy")
+if "-repeatedEVtest" not in sys.argv:
+    X = np.load("./X.npy")
+else:
+    X = [[-5,-6,3],[3,4,-3],[0,0,-2]]
+    X = np.array(X)
 
 if "-printX" in sys.argv:
     print(X)
 
-if "-analyseResults" not in sys.argv or "-playEigenGame" in sys.argv:
-    print("Playing the EigenGame...")
+if ("-analyseResults" not in sys.argv and "-visualiseResults" not in sys.argv) or "-playEigenGame" in sys.argv:
+    if "-modified" in sys.argv:
+        print("Playing the Modified EigenGame...")
+    else:
+        print("Playing the EigenGame...")
     V = playEigenGame(X, numIterations, k)
     EVs = getEigenVectorsK(X, k)
+    EVs[:,0] = -EVs[:,0]
+    EVs[:,1] = EVs[:,2]
     V = rearrange(V, EVs)
     print("EigenVectors obtained through EigenGame:")
     print(np.around(V,decimals=3))
     print("\nEigenVectors obtained through numpy:")
     print(np.around(EVs,decimals=3))
+    print(f"Distance measure: {np.around(getDistance(V,EVs), decimals=3)}")
 
 if "-analyseResults" in sys.argv:
     if "-modified" in sys.argv:
@@ -214,6 +226,9 @@ if "-analyseResults" in sys.argv:
         iterTimes = np.load("iterTimes.npy")
     EVs = np.around(getEigenVectorsK(X, k),decimals=3)
     EVs = rearrange(EVs, Vs[-1])
+    # EVs[:,0] = -EVs[:,0]
+    # EVs[:,1] = EVs[:,2]
+    # EVs = EVs[:,:2]
     diffs = []
     print("EigenVectors obtained through EigenGame:")
     for V in Vs:
@@ -232,3 +247,44 @@ if "-analyseResults" in sys.argv:
     plt.xlabel("Time elapsed (s)")
     plt.ylabel("Distance")
     plt.show()
+
+if "-visualiseResults" in sys.argv and "-3D" in sys.argv:
+    Vs = np.load("./Vs.npy")
+    if Vs[-1].shape[0] != 3:
+        print("Only 3D visualisations allowed!")
+        exit(0)
+    EVs = np.around(getEigenVectorsK(X, k),decimals=3)
+    EVs = rearrange(EVs, Vs[-1])
+    for pos in range(Vs[-1].shape[1]):
+        V = []
+        minX, minY, minZ = 0, 0, 0
+        maxX, maxY, maxZ = 0, 0, 0
+        for i in range(len(Vs)):
+            v = Vs[i]
+            V.append(v[pos])
+            if i:
+                minX = min(minX, v[pos][0])
+                minY = min(minY, v[pos][1])
+                minZ = min(minX, v[pos][2])
+                maxX = max(maxX, v[pos][0])
+                maxY = max(maxY, v[pos][1])
+                maxZ = max(maxZ, v[pos][2])
+        fig, ax = plt.subplots(subplot_kw=dict(projection="3d"))
+        fig.text(.5, .05, "\n" + "Obtained eigenvectors (blue): " + str(np.around(v[pos],decimals=3)) + "\n" + "Expected eigenvector (red): " + str(np.around(EVs[pos],decimals=3)), ha='center')
+        ax.set_xlabel('X-axis')
+        ax.set_ylabel('Y-axis')
+        ax.set_zlabel('Z-axis')
+        quiverFinal = ax.quiver(0, 0, 0, V[-1][0], V[-1][1], V[-1][2], color="r")
+        quiver = ax.quiver(0, 0, 0, V[0][0], V[0][1], V[0][2])
+        ax.set_xlim(minX-0.1, maxX+0.1)
+        ax.set_ylim(minY-0.1, maxY+0.1)
+        ax.set_zlim(minZ-0.1, maxZ+0.1)
+        def update(i):
+            global quiver 
+            quiver.remove()
+            quiver = ax.quiver(0, 0, 0, V[i][0], V[i][1], V[i][2])
+        ani = FuncAnimation(fig, update, frames=np.arange(len(V)), interval=100)
+        if "-saveVisualisations" in sys.argv:
+            print("Saving animation as video. Might take a while...")
+            ani.save(f'eigenVector{pos}.mp4')
+        plt.show()

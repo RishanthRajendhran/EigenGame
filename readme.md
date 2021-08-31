@@ -30,6 +30,7 @@
     Distance between the calculated eigenvectors after every iteration of update during the eigengame and the actual eigenvectors (obtained through numpy) vs the number of iterations and total time elapsed since the start of the game can be plotted by using the "-analyseResults" flag<br/>
     When using the "-analyseResults" flag, if one wants to first play the eigengame, one has to also use the "-playEigenGame" flag while executing the program<br/> 
     The "-debug" flag can be used to print some debug information<br/>
+    The "-visualiseResults" flag when used in combination with the "-3D" flag can be used to visualise 3D eigenvectors after every iteration of the EigenGame. The "-saveVisualisations" flag can be used to save the animations <br/>
     Arbitrary combination of flags might give undesirable results<br/>
     For example, using the "-repeatedEVtest" flag  along with the "analyseResults" flag without the "-playEigenGame" flag will only work as expected if the last played eigen game was with the "-repeatedEVtest" flag<br/>
     When run without flags, the program tries to get X from stored file in a hard-coded path. If not present, it would implicitly use the "-generateX" flag. The eigengame is then played and final results are printed<br/>

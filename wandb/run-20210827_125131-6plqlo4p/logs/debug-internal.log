@@ -1,0 +1,158 @@
+2021-08-27 12:51:32,546 INFO    MainThread:82009 [internal.py:wandb_internal():91] W&B internal server running at pid: 82009, started at: 2021-08-27 12:51:32.545975
+2021-08-27 12:51:32,548 INFO    WriterThread:82009 [datastore.py:open_for_write():77] open: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/run-6plqlo4p.wandb
+2021-08-27 12:51:32,548 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: check_version
+2021-08-27 12:51:32,549 DEBUG   SenderThread:82009 [sender.py:send():176] send: header
+2021-08-27 12:51:32,550 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: check_version
+2021-08-27 12:51:32,721 DEBUG   SenderThread:82009 [sender.py:send():176] send: run
+2021-08-27 12:51:33,059 INFO    SenderThread:82009 [dir_watcher.py:__init__():168] watching files in: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files
+2021-08-27 12:51:33,059 INFO    SenderThread:82009 [sender.py:_start_run_threads():699] run started: 6plqlo4p with start time 1630048891
+2021-08-27 12:51:33,059 DEBUG   SenderThread:82009 [sender.py:send():176] send: summary
+2021-08-27 12:51:33,059 INFO    SenderThread:82009 [sender.py:_save_file():821] saving file wandb-summary.json with policy end
+2021-08-27 12:51:33,060 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: run_start
+2021-08-27 12:51:34,322 INFO    Thread-8  :82009 [dir_watcher.py:_on_file_created():216] file/dir created: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/wandb-summary.json
+2021-08-27 12:51:36,830 DEBUG   HandlerThread:82009 [meta.py:__init__():39] meta init
+2021-08-27 12:51:36,830 DEBUG   HandlerThread:82009 [meta.py:__init__():53] meta init done
+2021-08-27 12:51:36,830 DEBUG   HandlerThread:82009 [meta.py:probe():210] probe
+2021-08-27 12:51:36,832 DEBUG   HandlerThread:82009 [meta.py:_setup_git():200] setup git
+2021-08-27 12:51:36,858 DEBUG   HandlerThread:82009 [meta.py:_setup_git():207] setup git done
+2021-08-27 12:51:36,860 DEBUG   HandlerThread:82009 [meta.py:_save_pip():57] save pip
+2021-08-27 12:51:36,861 DEBUG   HandlerThread:82009 [meta.py:_save_pip():71] save pip done
+2021-08-27 12:51:36,861 DEBUG   HandlerThread:82009 [meta.py:_save_conda():78] save conda
+2021-08-27 12:51:37,336 INFO    Thread-8  :82009 [dir_watcher.py:_on_file_created():216] file/dir created: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/conda-environment.yaml
+2021-08-27 12:51:37,339 INFO    Thread-8  :82009 [dir_watcher.py:_on_file_created():216] file/dir created: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/requirements.txt
+2021-08-27 12:51:38,344 INFO    Thread-8  :82009 [dir_watcher.py:_on_file_created():216] file/dir created: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/output.log
+2021-08-27 12:51:45,380 INFO    Thread-8  :82009 [dir_watcher.py:_on_file_modified():229] file/dir modified: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/conda-environment.yaml
+2021-08-27 12:51:45,419 DEBUG   HandlerThread:82009 [meta.py:_save_conda():86] save conda done
+2021-08-27 12:51:45,420 DEBUG   HandlerThread:82009 [meta.py:probe():252] probe done
+2021-08-27 12:51:45,424 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: stop_status
+2021-08-27 12:51:45,425 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: stop_status
+2021-08-27 12:51:45,718 DEBUG   SenderThread:82009 [sender.py:send():176] send: run
+2021-08-27 12:51:46,034 INFO    SenderThread:82009 [sender.py:send_run():600] updated run: 6plqlo4p
+2021-08-27 12:51:46,034 DEBUG   SenderThread:82009 [sender.py:send():176] send: files
+2021-08-27 12:51:46,035 INFO    SenderThread:82009 [sender.py:_save_file():821] saving file [100000, 4]_10000_4_0.5 with policy live
+2021-08-27 12:51:46,036 DEBUG   SenderThread:82009 [sender.py:send():176] send: files
+2021-08-27 12:51:46,037 INFO    SenderThread:82009 [sender.py:_save_file():821] saving file wandb-metadata.json with policy now
+2021-08-27 12:51:46,384 INFO    Thread-8  :82009 [dir_watcher.py:_on_file_modified():229] file/dir modified: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/config.yaml
+2021-08-27 12:51:46,385 INFO    Thread-8  :82009 [dir_watcher.py:_on_file_created():216] file/dir created: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/wandb-metadata.json
+2021-08-27 12:51:46,869 INFO    Thread-11 :82009 [upload_job.py:push():133] Uploaded file /var/folders/7m/2n3lfqqn4p9cb73mtczw0fy00000gn/T/tmp3gx7it8wwandb/20l1cdlc-wandb-metadata.json
+2021-08-27 12:52:00,720 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: stop_status
+2021-08-27 12:52:00,720 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: stop_status
+2021-08-27 12:52:06,251 DEBUG   SenderThread:82009 [sender.py:send():176] send: stats
+2021-08-27 12:52:16,115 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: stop_status
+2021-08-27 12:52:16,116 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: stop_status
+2021-08-27 12:52:31,396 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: stop_status
+2021-08-27 12:52:31,396 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: stop_status
+2021-08-27 12:52:37,757 DEBUG   SenderThread:82009 [sender.py:send():176] send: stats
+2021-08-27 12:52:46,679 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: stop_status
+2021-08-27 12:52:46,679 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: stop_status
+2021-08-27 12:53:01,961 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: stop_status
+2021-08-27 12:53:01,961 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: stop_status
+2021-08-27 12:53:09,425 DEBUG   SenderThread:82009 [sender.py:send():176] send: stats
+2021-08-27 12:53:17,344 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: stop_status
+2021-08-27 12:53:17,345 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: stop_status
+2021-08-27 12:53:32,704 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: stop_status
+2021-08-27 12:53:32,704 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: stop_status
+2021-08-27 12:53:40,959 DEBUG   SenderThread:82009 [sender.py:send():176] send: stats
+2021-08-27 12:53:47,987 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: stop_status
+2021-08-27 12:53:47,988 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: stop_status
+2021-08-27 12:54:03,301 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: stop_status
+2021-08-27 12:54:03,301 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: stop_status
+2021-08-27 12:54:07,736 DEBUG   SenderThread:82009 [sender.py:send():176] send: history
+2021-08-27 12:54:07,736 DEBUG   SenderThread:82009 [sender.py:send():176] send: summary
+2021-08-27 12:54:07,738 INFO    SenderThread:82009 [sender.py:_save_file():821] saving file wandb-summary.json with policy end
+2021-08-27 12:54:08,214 INFO    Thread-8  :82009 [dir_watcher.py:_on_file_modified():229] file/dir modified: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/wandb-summary.json
+2021-08-27 12:54:09,751 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: poll_exit
+2021-08-27 12:54:09,752 DEBUG   SenderThread:82009 [sender.py:send():176] send: telemetry
+2021-08-27 12:54:09,752 DEBUG   SenderThread:82009 [sender.py:send():176] send: exit
+2021-08-27 12:54:09,752 INFO    SenderThread:82009 [sender.py:send_exit():281] handling exit code: 0
+2021-08-27 12:54:09,753 INFO    SenderThread:82009 [sender.py:send_exit():289] send defer
+2021-08-27 12:54:09,753 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: poll_exit
+2021-08-27 12:54:09,754 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: defer
+2021-08-27 12:54:09,754 INFO    HandlerThread:82009 [handler.py:handle_request_defer():138] handle defer: 0
+2021-08-27 12:54:09,755 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: defer
+2021-08-27 12:54:09,755 INFO    SenderThread:82009 [sender.py:send_request_defer():298] handle sender defer: 0
+2021-08-27 12:54:09,755 INFO    SenderThread:82009 [sender.py:send_request_defer():336] send defer: 1
+2021-08-27 12:54:09,755 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: defer
+2021-08-27 12:54:09,755 INFO    HandlerThread:82009 [handler.py:handle_request_defer():138] handle defer: 1
+2021-08-27 12:54:09,764 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: defer
+2021-08-27 12:54:09,764 INFO    SenderThread:82009 [sender.py:send_request_defer():298] handle sender defer: 1
+2021-08-27 12:54:09,764 INFO    SenderThread:82009 [sender.py:send_request_defer():336] send defer: 2
+2021-08-27 12:54:09,765 DEBUG   SenderThread:82009 [sender.py:send():176] send: stats
+2021-08-27 12:54:09,766 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: defer
+2021-08-27 12:54:09,766 INFO    HandlerThread:82009 [handler.py:handle_request_defer():138] handle defer: 2
+2021-08-27 12:54:09,766 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: defer
+2021-08-27 12:54:09,767 INFO    SenderThread:82009 [sender.py:send_request_defer():298] handle sender defer: 2
+2021-08-27 12:54:09,767 INFO    SenderThread:82009 [sender.py:send_request_defer():336] send defer: 3
+2021-08-27 12:54:09,767 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: defer
+2021-08-27 12:54:09,767 INFO    HandlerThread:82009 [handler.py:handle_request_defer():138] handle defer: 3
+2021-08-27 12:54:09,768 DEBUG   SenderThread:82009 [sender.py:send():176] send: summary
+2021-08-27 12:54:09,768 INFO    SenderThread:82009 [sender.py:_save_file():821] saving file wandb-summary.json with policy end
+2021-08-27 12:54:09,769 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: defer
+2021-08-27 12:54:09,769 INFO    SenderThread:82009 [sender.py:send_request_defer():298] handle sender defer: 3
+2021-08-27 12:54:09,769 INFO    SenderThread:82009 [sender.py:send_request_defer():336] send defer: 4
+2021-08-27 12:54:09,769 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: defer
+2021-08-27 12:54:09,769 INFO    HandlerThread:82009 [handler.py:handle_request_defer():138] handle defer: 4
+2021-08-27 12:54:09,770 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: defer
+2021-08-27 12:54:09,770 INFO    SenderThread:82009 [sender.py:send_request_defer():298] handle sender defer: 4
+2021-08-27 12:54:09,859 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: poll_exit
+2021-08-27 12:54:10,061 INFO    SenderThread:82009 [sender.py:send_request_defer():336] send defer: 5
+2021-08-27 12:54:10,061 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: poll_exit
+2021-08-27 12:54:10,061 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: defer
+2021-08-27 12:54:10,061 INFO    HandlerThread:82009 [handler.py:handle_request_defer():138] handle defer: 5
+2021-08-27 12:54:10,062 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: defer
+2021-08-27 12:54:10,062 INFO    SenderThread:82009 [sender.py:send_request_defer():298] handle sender defer: 5
+2021-08-27 12:54:10,062 INFO    SenderThread:82009 [dir_watcher.py:finish():282] shutting down directory watcher
+2021-08-27 12:54:10,173 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: poll_exit
+2021-08-27 12:54:10,228 INFO    SenderThread:82009 [dir_watcher.py:_on_file_modified():229] file/dir modified: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/config.yaml
+2021-08-27 12:54:10,228 INFO    SenderThread:82009 [dir_watcher.py:_on_file_modified():229] file/dir modified: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/wandb-summary.json
+2021-08-27 12:54:10,229 INFO    SenderThread:82009 [dir_watcher.py:_on_file_modified():229] file/dir modified: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/output.log
+2021-08-27 12:54:10,229 INFO    SenderThread:82009 [dir_watcher.py:finish():312] scan: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files
+2021-08-27 12:54:10,230 INFO    SenderThread:82009 [dir_watcher.py:finish():318] scan save: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/requirements.txt requirements.txt
+2021-08-27 12:54:10,230 INFO    SenderThread:82009 [dir_watcher.py:finish():318] scan save: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/output.log output.log
+2021-08-27 12:54:10,234 INFO    SenderThread:82009 [dir_watcher.py:finish():318] scan save: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/config.yaml config.yaml
+2021-08-27 12:54:10,238 INFO    SenderThread:82009 [dir_watcher.py:finish():318] scan save: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/wandb-summary.json wandb-summary.json
+2021-08-27 12:54:10,239 INFO    SenderThread:82009 [dir_watcher.py:finish():318] scan save: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/conda-environment.yaml conda-environment.yaml
+2021-08-27 12:54:10,246 INFO    SenderThread:82009 [dir_watcher.py:finish():318] scan save: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/wandb-metadata.json wandb-metadata.json
+2021-08-27 12:54:10,246 INFO    SenderThread:82009 [sender.py:send_request_defer():336] send defer: 6
+2021-08-27 12:54:10,247 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: poll_exit
+2021-08-27 12:54:10,248 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: defer
+2021-08-27 12:54:10,249 INFO    HandlerThread:82009 [handler.py:handle_request_defer():138] handle defer: 6
+2021-08-27 12:54:10,251 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: defer
+2021-08-27 12:54:10,252 INFO    SenderThread:82009 [sender.py:send_request_defer():298] handle sender defer: 6
+2021-08-27 12:54:10,252 INFO    SenderThread:82009 [file_pusher.py:finish():176] shutting down file pusher
+2021-08-27 12:54:10,252 INFO    SenderThread:82009 [sender.py:send_request_defer():336] send defer: 7
+2021-08-27 12:54:10,254 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: defer
+2021-08-27 12:54:10,254 INFO    HandlerThread:82009 [handler.py:handle_request_defer():138] handle defer: 7
+2021-08-27 12:54:10,254 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: defer
+2021-08-27 12:54:10,254 INFO    SenderThread:82009 [sender.py:send_request_defer():298] handle sender defer: 7
+2021-08-27 12:54:10,356 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: poll_exit
+2021-08-27 12:54:11,048 INFO    Thread-13 :82009 [upload_job.py:push():133] Uploaded file /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/output.log
+2021-08-27 12:54:11,052 INFO    Thread-12 :82009 [upload_job.py:push():133] Uploaded file /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/requirements.txt
+2021-08-27 12:54:11,055 INFO    Thread-15 :82009 [upload_job.py:push():133] Uploaded file /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/wandb-summary.json
+2021-08-27 12:54:11,057 INFO    Thread-14 :82009 [upload_job.py:push():133] Uploaded file /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/config.yaml
+2021-08-27 12:54:11,060 INFO    Thread-16 :82009 [upload_job.py:push():133] Uploaded file /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/files/conda-environment.yaml
+2021-08-27 12:54:11,327 INFO    SenderThread:82009 [sender.py:send_request_defer():336] send defer: 8
+2021-08-27 12:54:11,328 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: poll_exit
+2021-08-27 12:54:11,329 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: defer
+2021-08-27 12:54:11,329 INFO    HandlerThread:82009 [handler.py:handle_request_defer():138] handle defer: 8
+2021-08-27 12:54:11,329 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: defer
+2021-08-27 12:54:11,329 INFO    SenderThread:82009 [sender.py:send_request_defer():298] handle sender defer: 8
+2021-08-27 12:54:11,329 INFO    SenderThread:82009 [sender.py:send_request_defer():336] send defer: 9
+2021-08-27 12:54:11,330 DEBUG   SenderThread:82009 [sender.py:send():176] send: final
+2021-08-27 12:54:11,330 DEBUG   SenderThread:82009 [sender.py:send():176] send: footer
+2021-08-27 12:54:11,330 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: defer
+2021-08-27 12:54:11,330 INFO    HandlerThread:82009 [handler.py:handle_request_defer():138] handle defer: 9
+2021-08-27 12:54:11,331 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: defer
+2021-08-27 12:54:11,331 INFO    SenderThread:82009 [sender.py:send_request_defer():298] handle sender defer: 9
+2021-08-27 12:54:11,440 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: poll_exit
+2021-08-27 12:54:11,440 DEBUG   SenderThread:82009 [sender.py:send_request():186] send_request: poll_exit
+2021-08-27 12:54:11,441 INFO    SenderThread:82009 [file_pusher.py:join():181] waiting for file pusher
+2021-08-27 12:54:11,443 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: get_summary
+2021-08-27 12:54:11,444 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: sampled_history
+2021-08-27 12:54:11,446 DEBUG   HandlerThread:82009 [handler.py:handle_request():121] handle_request: shutdown
+2021-08-27 12:54:11,446 INFO    HandlerThread:82009 [handler.py:finish():632] shutting down handler
+2021-08-27 12:54:12,333 INFO    WriterThread:82009 [datastore.py:close():258] close: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20210827_125131-6plqlo4p/run-6plqlo4p.wandb
+2021-08-27 12:54:12,443 INFO    SenderThread:82009 [sender.py:finish():925] shutting down sender
+2021-08-27 12:54:12,443 INFO    SenderThread:82009 [file_pusher.py:finish():176] shutting down file pusher
+2021-08-27 12:54:12,443 INFO    SenderThread:82009 [file_pusher.py:join():181] waiting for file pusher
+2021-08-27 12:54:12,450 INFO    MainThread:82009 [internal.py:handle_exit():78] Internal process exited
