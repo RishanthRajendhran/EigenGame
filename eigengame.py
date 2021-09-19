@@ -11,15 +11,27 @@ xDim = (10000, 3)
 numStepsPerIteration = 100
 T = 1100
 
-if "-variantA" in sys.argv:
-    L = T
+if "-variantC" in sys.argv:
+    L = numStepsPerIteration
+    if "-symmetric" in sys.argv:
+        variant = "2c"
+    else:
+        variant = "1c"
 elif "-variantB" in sys.argv:
     L = 1
-elif "-variantC" in sys.argv:
-    L = numStepsPerIteration
+    if "-symmetric" in sys.argv:
+        variant = "2b"
+    else:
+        variant = "1b"
+else:
+    L = T
+    if "-symmetric" in sys.argv:
+        variant = "2a"
+    else:
+        variant = "1a"
 
 numIterations = T//L
-k = 3
+k = 2
 learningRate = 0.001
 tolerance = 10
 
@@ -53,7 +65,8 @@ def getDistance(V, EVs):
 #Outputs
 #   Returns rearranged A matrix
 def rearrange(A, B):
-    newA = B.copy()
+    toRet = B.copy()
+    newA = A.copy()
     for i in range(A.shape[1]):
         a = A[:,i]
         minDist = np.inf 
@@ -72,7 +85,9 @@ def rearrange(A, B):
                 minCol = j
                 isNeg = True
         newA[:,minCol] = (not isNeg)*A[:,i].copy() - isNeg*A[:,i].copy()
-    return newA
+    for i in range(toRet.shape[1]):
+        toRet[:,i] = newA[:, i]
+    return toRet
 
 #Function to return the reward
 #Inputs
@@ -96,7 +111,7 @@ def getPenalty(X, V, i):
     penalty = np.zeros((X.shape[0], 1))
     for j in range(k):
         condition = j < i
-        if "-modified" in sys.argv:
+        if "-symmetric" in sys.argv:
             condition = j != i
         if condition:
             dotProd = (np.dot(np.dot(X, V[:,i]), np.dot(X, V[:,j]))/np.dot(np.dot(X, V[:,j]), np.dot(X, V[:,j])))*np.dot(X,V[:,j]).reshape(-1,1)
@@ -133,13 +148,12 @@ def getAngle(u, v):
 #   Returns updated numpy array of eigenvectors 
 def checkVectors(V, curPlayer, oldPos):
     for i in range(V.shape[1]):
-        if "-modified" in sys.argv:
+        if "-symmetric" in sys.argv:
             if i != curPlayer and 0 <= getAngle(V[:,i], V[:, curPlayer]) <= tolerance and 180-tolerance <= getAngle(V[:,i], V[:, curPlayer]) <= 180:
                 V[:,curPlayer] = -oldPos
                 break
         else:
             if i < curPlayer and 0 <= getAngle(V[:,i], V[:, curPlayer]) <= tolerance and 180-tolerance <= getAngle(V[:,i], V[:, curPlayer]) <= 180:
-                print("Hey")
                 V[:,curPlayer] = -oldPos
                 break
     return V
@@ -166,11 +180,10 @@ def updateEigenVectors(X, V, i, reward, penalty, alpha=learningRate):
 #Function to find eigenvectors of a given X using Numpy
 #Inputs 
 #   X   - Numpy array of the dataset
-#   k   - Number of eigenvectors to find
 #Outputs
-#   Returns k eigenvectors of V as a matrix of dimensions X.shape[1] x k
-def getEigenVectorsK(X, k=1):
-    return np.linalg.eig(np.dot(X.T, X))[1][:,:k]
+#   Returns all the eigenvectors of V as a matrix of dimensions X.shape[1] x X.shape[1]
+def getEigenVectors(X):
+    return np.linalg.eig(np.dot(X.T, X))[1]
 
 #Function to find eigenvectors of a given X
 #Inputs 
@@ -184,19 +197,11 @@ def playEigenGame(X, T, k):
     V = None
     if "-continueEigenGame" in sys.argv:
         print("Continuing the last game...")
-        if "-modified" in sys.argv:
-            if os.path.exists("Vs_modified.npy") and os.path.isfile("Vs_modified.npy"):
-                V = np.load("Vs_modified.npy")[-1]
-            else:
-                print("Last game not found!\nStarting new game...")
-                V = np.ones((X.shape[1],k))
-        else: 
-            if os.path.exists("Vs.npy") and os.path.isfile("Vs.npy"):
-                V = np.load("Vs.npy")[-1]
-            else:
-                print("Last game not found!\nStarting new game...")
-                # V = np.ones((X.shape[1],k))
-                V = np.random.rand(X.shape[0],k)
+        if os.path.exists(f"Vs_{variant}.npy") and os.path.isfile(f"Vs_{variant}.npy"):
+            V = np.load(f"Vs_{variant}.npy")[-1]
+        else:
+            print("Last game not found!\nStarting new game...")
+            V = np.ones((X.shape[1],k))
     if "-continueEigenGame" not in sys.argv or V.shape != (X.shape[1], k):
         # V = np.ones((X.shape[1],k))
         # V = np.eye(X.shape[1],k)
@@ -221,24 +226,13 @@ def playEigenGame(X, T, k):
     Vs = np.array(Vs)
     iterTimes = np.array(iterTimes)
     if "-continueEigenGame" in sys.argv:
-        if "-modified" in sys.argv:
-            oldVs = np.load("Vs_modified.npy")
-            oldIterTimes = np.load("iterTimes_modified.npy")
-            Vs = np.append(oldVs, Vs.copy(),0)
-            iterTimes = iterTimes + np.sum(oldIterTimes)
-            iterTimes = np.append(oldIterTimes, iterTimes.copy(),0)
-        else:
-            oldVs = np.load("Vs.npy")
-            oldIterTimes = np.load("iterTimes.npy")
-            Vs = np.append(oldVs, Vs.copy(),0)
-            iterTimes = iterTimes + np.sum(oldIterTimes)
-            iterTimes = np.append(oldIterTimes, iterTimes.copy(),0)
-    if "-modified" in sys.argv:
-        np.save("Vs_modified.npy",Vs)
-        np.save("iterTimes_modified.npy",iterTimes)
-    else:
-        np.save("Vs.npy",Vs)
-        np.save("iterTimes.npy",iterTimes)
+        oldVs = np.load(f"Vs_{variant}.npy")
+        oldIterTimes = np.load(f"iterTimes_{variant}.npy")
+        Vs = np.append(oldVs, Vs.copy(),0)
+        iterTimes = iterTimes + np.sum(oldIterTimes)
+        iterTimes = np.append(oldIterTimes, iterTimes.copy(),0)
+    np.save(f"Vs_{variant}.npy",Vs)
+    np.save(f"iterTimes_{variant}.npy",iterTimes)
     return V
 
 #-------------------------------------------------------------------------------------------------------------------------
@@ -270,14 +264,13 @@ if "-printX" in sys.argv:
     print(X)
 
 if ("-analyseResults" not in sys.argv and "-visualiseResults" not in sys.argv and "-visualiseResultsTogether" not in sys.argv and "-analyseAngles" not in sys.argv and "-analyseAnglesTogether" not in sys.argv) or "-playEigenGame" in sys.argv:
-    if "-modified" in sys.argv:
-        print("Playing the Modified EigenGame...")
+    if "-symmetric" in sys.argv:
+        print(f"Playing the symmetric penalty EigenGame (Variant {variant[-1]})...")
     else:
-        print("Playing the EigenGame...")
+        print(f"Playing the asymmetric EigenGame (Variant {variant[-1]})...")
     V = playEigenGame(X, numIterations, k)
-    EVs = getEigenVectorsK(X, X.shape[1])
-    V = rearrange(V, EVs)
-    EVs = EVs[:,:k].copy()
+    EVs = getEigenVectors(X)
+    EVs = rearrange(EVs, V)
     print("EigenVectors obtained through EigenGame:")
     print(np.around(V,decimals=3))
     print("\nEigenVectors obtained through numpy:")
@@ -286,13 +279,9 @@ if ("-analyseResults" not in sys.argv and "-visualiseResults" not in sys.argv an
     print(f"Distance measure: {np.around(getDistance(V,EVs), decimals=3)}")
 
 if "-analyseResults" in sys.argv:
-    if "-modified" in sys.argv:
-        Vs = np.load("Vs_modified.npy")
-        iterTimes = np.load("iterTimes_modified.npy")
-    else:
-        Vs = np.load("Vs.npy")
-        iterTimes = np.load("iterTimes.npy")
-    EVs = np.around(getEigenVectorsK(X, k),decimals=3)
+    Vs = np.load(f"Vs_{variant}.npy")
+    iterTimes = np.load(f"iterTimes_{variant}.npy")
+    EVs = np.around(getEigenVectors(X),decimals=3)
     EVs = rearrange(EVs, Vs[-1])
     diffs = []
     print("EigenVectors obtained through EigenGame:")
@@ -307,35 +296,22 @@ if "-analyseResults" in sys.argv:
     plt.plot(diffs)
     plt.xlabel("Iterations")
     plt.ylabel("Distance")
-    if "-modified" in sys.argv:
-            plt.title(f"Variant 2.b: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
-    else:
-        plt.title(f"Variant 1.b: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
-    if "-savePlots" in sys.argv:
-        if "-modified" in sys.argv:
-            plt.savefig("./plots/distanceVSiterations_modified")
-        else:
-            plt.savefig("./plots/distanceVSiterations")
-    plt.show()
+    plt.title(f"Variant {variant}: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
+    if "-savePlots" in sys.argv or "-saveMode" in sys.argv:
+        plt.savefig(f"./plots/distanceVSiterations_{variant}")
+    if "-saveMode" not in sys.argv:
+        plt.show()
     plt.plot(iterTimes, diffs)
     plt.xlabel("Time elapsed (s)")
     plt.ylabel("Distance")
-    if "-modified" in sys.argv:
-            plt.title(f"Variant 2.b: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
-    else:
-        plt.title(f"Variant 1.b: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
-    if "-savePlots" in sys.argv:
-        if "-modified" in sys.argv:
-            plt.savefig("./plots/distanceVStotalTimeElapsed_modified")
-        else:
-            plt.savefig("./plots/distanceVStotalTimeElapsed")
-    plt.show()
+    plt.title(f"Variant {variant}: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
+    if "-savePlots" in sys.argv or "-saveMode" in sys.argv:
+        plt.savefig(f"./plots/distanceVStotalTimeElapsed_{variant}")
+    if "-saveMode" not in sys.argv:
+        plt.show()
 
 if "-visualiseResults" in sys.argv and "-3D" in sys.argv:
-    if "-modified" in sys.argv:
-        Vs = np.load("./Vs_modified.npy")
-    else:
-        Vs = np.load("./Vs.npy")
+    Vs = np.load(f"./Vs_{variant}.npy")
     if Vs[-1].shape[0] != 3:
         print("Only 3D visualisations allowed!")
         exit(0)
@@ -346,7 +322,7 @@ if "-visualiseResults" in sys.argv and "-3D" in sys.argv:
     elif "-lowSpeed" in sys.argv:
         visualisationSpeed = 1000
 
-    EVs = np.around(getEigenVectorsK(X, k),decimals=3)
+    EVs = np.around(getEigenVectors(X),decimals=3)
     EVs = rearrange(EVs, Vs[-1])
     for pos in range(Vs[-1].shape[1]):
         V = []
@@ -363,10 +339,7 @@ if "-visualiseResults" in sys.argv and "-3D" in sys.argv:
                 maxY = max(maxY, v[1])
                 maxZ = max(maxZ, v[2])
         fig, ax = plt.subplots(subplot_kw=dict(projection="3d"))
-        if "-modified" in sys.argv:
-            plt.title(f"Variant 2.b: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
-        else:
-            plt.title(f"Variant 1.b: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
+        plt.title(f"Variant {variant}: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
         fig.text(.5, .05, "\n" + "Obtained eigenvectors (blue): " + str(np.around(Vs[-1][:,pos],decimals=3)) + "\n" + "Expected eigenvector (red): " + str(np.around(EVs[:,pos],decimals=3)), ha='center')
         ax.set_xlabel('X-axis')
         ax.set_ylabel('Y-axis')
@@ -383,22 +356,17 @@ if "-visualiseResults" in sys.argv and "-3D" in sys.argv:
         ani = FuncAnimation(fig, update, frames=np.arange(len(V)), interval=visualisationSpeed)
         if "-saveMode" not in sys.argv:
             plt.show()
-        if "-saveVisualisations" in sys.argv:
+        if "-saveVisualisations" in sys.argv or "-saveMode" in sys.argv:
             print("Saving visualisation. Might take a while...")
-            if "-modified" in sys.argv:
-                ani.save(f'./visualisations/eigenVector{pos}_modified.mp4')
-            else:
-                ani.save(f'./visualisations/eigenVector{pos}.mp4')
+            ani.save(f'./visualisations/eigenVector{pos}_{variant}.mp4')
             print("Visualisation saved successfully!")
 
 if "-visualiseResultsTogether" in sys.argv and "-3D" in sys.argv:
-    if "-modified" in sys.argv:
-        Vs = np.load("./Vs_modified.npy")
-    else:
-        Vs = np.load("./Vs.npy")
-    # if Vs[-1].shape[0] != 3:
-    #     print("Only 3D visualisations allowed!")
-    #     exit(0)
+    Vs = np.load(f"./Vs_{variant}.npy")
+
+    if Vs[-1].shape[0] != 3:
+        print("Only 3D visualisations allowed!")
+        exit(0)
 
     visualisationSpeed = 1         #Default speed : highSpeed
     if "-mediumSpeed" in sys.argv:
@@ -406,7 +374,7 @@ if "-visualiseResultsTogether" in sys.argv and "-3D" in sys.argv:
     elif "-lowSpeed" in sys.argv:
         visualisationSpeed = 1000
 
-    EVs = np.around(getEigenVectorsK(X, k),decimals=3)
+    EVs = np.around(getEigenVectors(X),decimals=3)
     EVs = rearrange(EVs, Vs[-1])
 
     minX, minY, minZ = 0, 0, 0
@@ -423,10 +391,7 @@ if "-visualiseResultsTogether" in sys.argv and "-3D" in sys.argv:
                 maxZ = max(maxZ, v[2])
 
     fig, ax = plt.subplots(subplot_kw=dict(projection="3d"))
-    if "-modified" in sys.argv:
-        plt.title(f"Variant 2.b: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
-    else:
-        plt.title(f"Variant 1.b: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
+    plt.title(f"Variant {variant}: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
     ax.set_xlabel('X-axis')
     ax.set_ylabel('Y-axis')
     ax.set_zlabel('Z-axis')
@@ -448,21 +413,14 @@ if "-visualiseResultsTogether" in sys.argv and "-3D" in sys.argv:
     ani = FuncAnimation(fig, update, frames=np.arange(len(Vs)), interval=visualisationSpeed)
     if "-saveMode" not in sys.argv:
         plt.show()
-    if "-saveVisualisations" in sys.argv:
+    if "-saveVisualisations" in sys.argv or "-saveMode" in sys.argv:
         print("Saving visualisation. Might take a while...")
-        if "-modified" in sys.argv:
-            ani.save(f'./visualisations/eigenVectors_modified.mp4')
-        else:
-            ani.save(f'./visualisations/eigenVectors.mp4')
+        ani.save(f'./visualisations/eigenVectors_{variant}.mp4')
         print("Visualisation saved successfully!")
 
 if "-analyseAngles" in sys.argv or "-analyseAnglesTogether" in sys.argv:
-    if "-modified" in sys.argv:
-        Vs = np.load("./Vs_modified.npy")
-        iterTimes = np.load("./iterTimes_modified.npy")
-    else:
-        Vs = np.load("./Vs.npy")
-        iterTimes = np.load("./iterTimes.npy")
+    Vs = np.load(f"./Vs_{variant}.npy")
+    iterTimes = np.load(f"./iterTimes_{variant}.npy")
     EVs = np.linalg.eig(np.dot(X.T,X))[1]
     EVs = rearrange(EVs, Vs[-1])
     angles = []
@@ -473,33 +431,23 @@ if "-analyseAngles" in sys.argv or "-analyseAnglesTogether" in sys.argv:
             angle.append((np.dot(np.transpose(curV),EVs[:,col])/(np.linalg.norm(curV)*np.linalg.norm(EVs[:,col]))))
         angles.append(angle)
     angles = np.array(angles)
-    if "-modified" in sys.argv:
-        np.save("./angles_modified.npy",angles)
-    else: 
-        np.save("./angles.npy",angles)
-    if "-modified" in sys.argv:
-        pltTitle = f"Variant 2.b: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}"
-    else:
-        pltTitle = f"Variant 1.b: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}"
+    np.save(f"./angles_{variant}.npy",angles)
+    pltTitle = f"Variant {variant}: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}"
     for i in range(len(angles)):
         plt.xlabel("Iterations")
         plt.ylabel("Angle between obtained EV and expected EV")
         plt.title(pltTitle)
         plt.plot(np.arange(len(angles[i])), angles[i], color="C"+str(i))
         if "-analyseAnglesTogether" not in sys.argv:
-            if "-savePlots" in sys.argv:
-                if "-modified" in sys.argv:
-                    plt.savefig(f"./plots/anglesVSiterations{i}_modified")
-                else:
-                    plt.savefig(f"./plots/anglesVSiterations{i}")
-            plt.show()
+            if "-savePlots" in sys.argv or "-saveMode" in sys.argv:
+                plt.savefig(f"./plots/anglesVSiterations{i}_{variant}")
+            if "-saveMode" not in sys.argv:
+                plt.show()
     if "-analyseAnglesTogether" in sys.argv:
-        if "-savePlots" in sys.argv:
-            if "-modified" in sys.argv:
-                plt.savefig(f"./plots/anglesVSiterations_modified")
-            else:
-                plt.savefig(f"./plots/anglesVSiterations")
-        plt.show()
+        if "-savePlots" in sys.argv or "-saveMode" in sys.argv:
+            plt.savefig(f"./plots/anglesVSiterations_{variant}")
+        if "-saveMode" not in sys.argv:
+            plt.show()
     
     for i in range(len(angles)):
         plt.xlabel("Total Time Elapsed")
@@ -507,27 +455,19 @@ if "-analyseAngles" in sys.argv or "-analyseAnglesTogether" in sys.argv:
         plt.title(pltTitle)
         plt.plot(iterTimes, angles[i], color="C"+str(i))
         if "-analyseAnglesTogether" not in sys.argv:
-            if "-savePlots" in sys.argv:
-                if "-modified" in sys.argv:
-                    plt.savefig(f"./plots/anglesVStotalTimeElapsed{i}_modified")
-                else:
-                    plt.savefig(f"./plots/anglesVStotalTimeElapsed{i}")
-            plt.show()
+            if "-savePlots" in sys.argv or "-saveMode" in sys.argv:
+                plt.savefig(f"./plots/anglesVStotalTimeElapsed{i}_{variant}")
+            if "-saveMode" not in sys.argv:
+                plt.show()
     if "-analyseAnglesTogether" in sys.argv:
-        if "-savePlots" in sys.argv:
-            if "-modified" in sys.argv:
-                plt.savefig(f"./plots/anglesVStotalTimeElapsed_modified")
-            else:
-                plt.savefig(f"./plots/anglesVStotalTimeElapsed")
-        plt.show()
+        if "-savePlots" in sys.argv or "-saveMode" in sys.argv:
+            plt.savefig(f"./plots/anglesVStotalTimeElapsed_{variant}")
+        if "-saveMode" not in sys.argv:
+            plt.show()
 
 if "-analyseSubspaceAngles" in sys.argv:
-    if "-modified" in sys.argv:
-        Vs = np.load("./Vs_modified.npy")
-        iterTimes = np.load("./iterTimes_modified.npy")
-    else:
-        Vs = np.load("./Vs.npy")
-        iterTimes = np.load("./iterTimes.npy")
+    Vs = np.load(f"./Vs_{variant}.npy")
+    iterTimes = np.load(f"./iterTimes_{variant}.npy")
     EVs = np.linalg.eig(np.dot(X.T,X))[1]
     EVs = rearrange(EVs, Vs[-1])
     angles = []
@@ -542,32 +482,22 @@ if "-analyseSubspaceAngles" in sys.argv:
         print(Vs[t][:,:2])
         print(EVs[:,1:])
         print(np.rad2deg(subspace_angles(Vs[t], EVs)))
-    if "-modified" in sys.argv:
-        np.save("./subspaceAngles_modified.npy",angles)
-    else: 
-        np.save("./subspaceAngles.npy",angles)
-    if "-modified" in sys.argv:
-        pltTitle = f"Variant 2.b: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}"
-    else:
-        pltTitle = f"Variant 1.b: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}"
+    np.save(f"./subspaceAngles_{variant}.npy",angles)
+    pltTitle = f"Variant {variant}: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}"
     plt.xlabel("Iterations")
     plt.ylabel("Subspace Angle between obtained EV and expected EV")
     plt.title(pltTitle)
     plt.plot(np.arange(len(angles)), angles)
-    if "-savePlots" in sys.argv:
-        if "-modified" in sys.argv:
-            plt.savefig(f"./plots/subspaceAnglesVSiterations_modified")
-        else:
-            plt.savefig(f"./plots/subspaceAnglesVSiterations")
-    plt.show()
+    if "-savePlots" in sys.argv or "-saveMode" in sys.argv:
+        plt.savefig(f"./plots/subspaceAnglesVSiterations_{variant}")
+    if "-saveMode" not in sys.argv:
+        plt.show()
 
     plt.xlabel("Total Time Elapsed")
     plt.ylabel("Angle between obtained EV and expected EV")
     plt.title(pltTitle)
     plt.plot(iterTimes, angles)
-    if "-savePlots" in sys.argv:
-        if "-modified" in sys.argv:
-            plt.savefig(f"./plots/subspaceAnglesVStotalTimeElapsed_modified")
-        else:
-            plt.savefig(f"./plots/subspaceAnglesVStotalTimeElapsed")
-    plt.show()
+    if "-savePlots" in sys.argv or "-saveMode" in sys.argv:
+        plt.savefig(f"./plots/subspaceAnglesVStotalTimeElapsed_{variant}")
+    if "-saveMode" not in sys.argv:
+        plt.show()
