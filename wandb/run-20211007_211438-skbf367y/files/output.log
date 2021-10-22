@@ -1,0 +1,17 @@
+eigengame_wandb.py:274: RuntimeWarning: overflow encountered in true_divide
+  v /= (1-beta2**(t+1))
+eigengame_wandb.py:273: RuntimeWarning: overflow encountered in true_divide
+  m /= (1-beta1**(t+1))
+Playing the asymmetric EigenGame (Variant c, adam)...
+Time taken: 19.174299955368042s
+EigenVectors obtained through EigenGame:
+[[0.906 0.441 0.777]
+ [0.422 0.65  0.483]
+ [0.041 0.618 0.404]]
+EigenVectors obtained through numpy:
+[[ 0.765  0.302  0.302]
+ [-0.642  0.302  0.302]
+ [-0.041  0.905  0.905]]
+Learning Rate : 1e-07
+Distance measure: 1.375
+Time taken to converge as per expectation: inf s

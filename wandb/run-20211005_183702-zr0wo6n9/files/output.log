@@ -1,0 +1,18 @@
+
+Playing the asymmetric EigenGame (Variant c)...
+EigenVectors obtained through EigenGame:
+[[ 0.939  0.674  0.684]
+ [ 0.069  0.739  0.73 ]
+ [-0.336 -0.011 -0.016]]
+EigenVectors obtained through numpy:
+[[ 0.765  0.302  0.569]
+ [-0.642  0.302  0.705]
+ [-0.041  0.905 -0.424]]
+Learning Rate : 20
+Distance measure: 1.404
+Traceback (most recent call last):
+  File "eigengame_wandb.py", line 327, in <module>
+    Vs = np.load(f"Vs_{config.variant}.npy")
+  File "/Users/rishanthrajendhran/opt/anaconda3/lib/python3.7/site-packages/numpy/lib/npyio.py", line 416, in load
+    fid = stack.enter_context(open(os_fspath(file), "rb"))
+FileNotFoundError: [Errno 2] No such file or directory: 'Vs_c.npy'

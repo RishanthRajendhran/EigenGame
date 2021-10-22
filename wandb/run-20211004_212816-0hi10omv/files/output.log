@@ -1,0 +1,8 @@
+
+Playing the asymmetric EigenGame (Variant c)...
+Traceback (most recent call last):
+  File "eigengame_wandb.py", line 317, in <module>
+    EVs = rearrange(EVs, V)
+  File "eigengame_wandb.py", line 95, in rearrange
+    newA[:,minCol] = (not isNeg)*A[:,i].copy() - isNeg*A[:,i].copy()
+IndexError: index 4 is out of bounds for axis 1 with size 3

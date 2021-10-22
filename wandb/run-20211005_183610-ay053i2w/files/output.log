@@ -1,0 +1,16 @@
+
+Playing the asymmetric EigenGame (Variant c)...
+EigenVectors obtained through EigenGame:
+[[-0.075  0.668  0.166]
+ [ 0.953  0.742 -0.058]
+ [-0.293 -0.054  0.984]]
+EigenVectors obtained through numpy:
+[[-0.765  0.569  0.302]
+ [ 0.642  0.705  0.302]
+ [ 0.041 -0.424  0.905]]
+Learning Rate : 20
+Distance measure: 0.994
+Traceback (most recent call last):
+  File "eigengame_wandb.py", line 327, in <module>
+    Vs = np.load(f"Vs_{variant}.npy")
+NameError: name 'variant' is not defined

@@ -1,0 +1,158 @@
+2021-10-04 21:35:23,883 INFO    MainThread:27339 [internal.py:wandb_internal():89] W&B internal server running at pid: 27339, started at: 2021-10-04 21:35:23.883538
+2021-10-04 21:35:23,885 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: check_version
+2021-10-04 21:35:23,885 INFO    WriterThread:27339 [datastore.py:open_for_write():77] open: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/run-k5rxb69v.wandb
+2021-10-04 21:35:23,887 DEBUG   SenderThread:27339 [sender.py:send():185] send: header
+2021-10-04 21:35:23,887 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: check_version
+2021-10-04 21:35:24,012 DEBUG   SenderThread:27339 [sender.py:send():185] send: run
+2021-10-04 21:35:24,346 INFO    SenderThread:27339 [dir_watcher.py:__init__():169] watching files in: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files
+2021-10-04 21:35:24,346 INFO    SenderThread:27339 [sender.py:_start_run_threads():749] run started: k5rxb69v with start time 1633363523
+2021-10-04 21:35:24,346 DEBUG   SenderThread:27339 [sender.py:send():185] send: summary
+2021-10-04 21:35:24,347 INFO    SenderThread:27339 [sender.py:_save_file():879] saving file wandb-summary.json with policy end
+2021-10-04 21:35:24,347 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: run_start
+2021-10-04 21:35:25,580 INFO    Thread-8  :27339 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/wandb-summary.json
+2021-10-04 21:35:27,210 DEBUG   HandlerThread:27339 [meta.py:__init__():40] meta init
+2021-10-04 21:35:27,210 DEBUG   HandlerThread:27339 [meta.py:__init__():54] meta init done
+2021-10-04 21:35:27,211 DEBUG   HandlerThread:27339 [meta.py:probe():211] probe
+2021-10-04 21:35:27,213 DEBUG   HandlerThread:27339 [meta.py:_setup_git():201] setup git
+2021-10-04 21:35:27,242 DEBUG   HandlerThread:27339 [meta.py:_setup_git():208] setup git done
+2021-10-04 21:35:27,243 DEBUG   HandlerThread:27339 [meta.py:_save_pip():58] save pip
+2021-10-04 21:35:27,244 DEBUG   HandlerThread:27339 [meta.py:_save_pip():72] save pip done
+2021-10-04 21:35:27,245 DEBUG   HandlerThread:27339 [meta.py:_save_conda():79] save conda
+2021-10-04 21:35:27,590 INFO    Thread-8  :27339 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/conda-environment.yaml
+2021-10-04 21:35:27,592 INFO    Thread-8  :27339 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/requirements.txt
+2021-10-04 21:35:29,599 INFO    Thread-8  :27339 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/output.log
+2021-10-04 21:35:31,607 INFO    Thread-8  :27339 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/output.log
+2021-10-04 21:35:35,046 DEBUG   HandlerThread:27339 [meta.py:_save_conda():87] save conda done
+2021-10-04 21:35:35,046 DEBUG   HandlerThread:27339 [meta.py:probe():249] probe done
+2021-10-04 21:35:35,053 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: stop_status
+2021-10-04 21:35:35,053 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: stop_status
+2021-10-04 21:35:35,329 DEBUG   SenderThread:27339 [sender.py:send():185] send: run
+2021-10-04 21:35:35,627 INFO    Thread-8  :27339 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/conda-environment.yaml
+2021-10-04 21:35:35,627 INFO    Thread-8  :27339 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/config.yaml
+2021-10-04 21:35:35,627 INFO    Thread-8  :27339 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/wandb-metadata.json
+2021-10-04 21:35:35,641 INFO    SenderThread:27339 [sender.py:send_run():643] updated run: k5rxb69v
+2021-10-04 21:35:35,641 DEBUG   SenderThread:27339 [sender.py:send():185] send: files
+2021-10-04 21:35:35,641 INFO    SenderThread:27339 [sender.py:_save_file():879] saving file [10000, 5]_35000_3_5 with policy live
+2021-10-04 21:35:35,642 DEBUG   SenderThread:27339 [sender.py:send():185] send: files
+2021-10-04 21:35:35,643 INFO    SenderThread:27339 [sender.py:_save_file():879] saving file wandb-metadata.json with policy now
+2021-10-04 21:35:36,409 INFO    Thread-11 :27339 [upload_job.py:push():137] Uploaded file /var/folders/7m/2n3lfqqn4p9cb73mtczw0fy00000gn/T/tmpcggkt7zowandb/906g9jau-wandb-metadata.json
+2021-10-04 21:35:36,439 DEBUG   SenderThread:27339 [sender.py:send():185] send: history
+2021-10-04 21:35:36,439 DEBUG   SenderThread:27339 [sender.py:send():185] send: summary
+2021-10-04 21:35:36,440 INFO    SenderThread:27339 [sender.py:_save_file():879] saving file wandb-summary.json with policy end
+2021-10-04 21:35:36,633 INFO    Thread-8  :27339 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/wandb-summary.json
+2021-10-04 21:35:37,638 INFO    Thread-8  :27339 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/output.log
+2021-10-04 21:35:38,928 DEBUG   SenderThread:27339 [sender.py:send():185] send: telemetry
+2021-10-04 21:35:38,929 DEBUG   SenderThread:27339 [sender.py:send():185] send: exit
+2021-10-04 21:35:38,929 INFO    SenderThread:27339 [sender.py:send_exit():294] handling exit code: 0
+2021-10-04 21:35:38,929 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: poll_exit
+2021-10-04 21:35:38,929 INFO    SenderThread:27339 [sender.py:send_exit():296] handling runtime: 14
+2021-10-04 21:35:38,931 INFO    SenderThread:27339 [sender.py:_save_file():879] saving file wandb-summary.json with policy end
+2021-10-04 21:35:38,931 INFO    SenderThread:27339 [sender.py:send_exit():306] send defer
+2021-10-04 21:35:38,931 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: poll_exit
+2021-10-04 21:35:38,932 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: defer
+2021-10-04 21:35:38,932 INFO    HandlerThread:27339 [handler.py:handle_request_defer():143] handle defer: 0
+2021-10-04 21:35:38,933 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: defer
+2021-10-04 21:35:38,933 INFO    SenderThread:27339 [sender.py:send_request_defer():315] handle sender defer: 0
+2021-10-04 21:35:38,933 INFO    SenderThread:27339 [sender.py:transition_state():319] send defer: 1
+2021-10-04 21:35:38,933 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: defer
+2021-10-04 21:35:38,933 INFO    HandlerThread:27339 [handler.py:handle_request_defer():143] handle defer: 1
+2021-10-04 21:35:38,979 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: defer
+2021-10-04 21:35:38,980 INFO    SenderThread:27339 [sender.py:send_request_defer():315] handle sender defer: 1
+2021-10-04 21:35:38,980 INFO    SenderThread:27339 [sender.py:transition_state():319] send defer: 2
+2021-10-04 21:35:38,980 DEBUG   SenderThread:27339 [sender.py:send():185] send: stats
+2021-10-04 21:35:38,981 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: defer
+2021-10-04 21:35:38,981 INFO    HandlerThread:27339 [handler.py:handle_request_defer():143] handle defer: 2
+2021-10-04 21:35:38,981 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: defer
+2021-10-04 21:35:38,981 INFO    SenderThread:27339 [sender.py:send_request_defer():315] handle sender defer: 2
+2021-10-04 21:35:38,981 INFO    SenderThread:27339 [sender.py:transition_state():319] send defer: 3
+2021-10-04 21:35:38,982 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: defer
+2021-10-04 21:35:38,982 INFO    HandlerThread:27339 [handler.py:handle_request_defer():143] handle defer: 3
+2021-10-04 21:35:38,982 DEBUG   SenderThread:27339 [sender.py:send():185] send: summary
+2021-10-04 21:35:38,983 INFO    SenderThread:27339 [sender.py:_save_file():879] saving file wandb-summary.json with policy end
+2021-10-04 21:35:38,983 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: defer
+2021-10-04 21:35:38,983 INFO    SenderThread:27339 [sender.py:send_request_defer():315] handle sender defer: 3
+2021-10-04 21:35:38,983 INFO    SenderThread:27339 [sender.py:transition_state():319] send defer: 4
+2021-10-04 21:35:38,983 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: defer
+2021-10-04 21:35:38,984 INFO    HandlerThread:27339 [handler.py:handle_request_defer():143] handle defer: 4
+2021-10-04 21:35:38,984 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: defer
+2021-10-04 21:35:38,984 INFO    SenderThread:27339 [sender.py:send_request_defer():315] handle sender defer: 4
+2021-10-04 21:35:39,038 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: poll_exit
+2021-10-04 21:35:39,308 INFO    SenderThread:27339 [sender.py:transition_state():319] send defer: 5
+2021-10-04 21:35:39,308 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: poll_exit
+2021-10-04 21:35:39,309 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: defer
+2021-10-04 21:35:39,309 INFO    HandlerThread:27339 [handler.py:handle_request_defer():143] handle defer: 5
+2021-10-04 21:35:39,309 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: defer
+2021-10-04 21:35:39,309 INFO    SenderThread:27339 [sender.py:send_request_defer():315] handle sender defer: 5
+2021-10-04 21:35:39,309 INFO    SenderThread:27339 [dir_watcher.py:finish():283] shutting down directory watcher
+2021-10-04 21:35:39,414 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: poll_exit
+2021-10-04 21:35:39,644 INFO    SenderThread:27339 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/config.yaml
+2021-10-04 21:35:39,644 INFO    SenderThread:27339 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/wandb-summary.json
+2021-10-04 21:35:39,644 INFO    SenderThread:27339 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/output.log
+2021-10-04 21:35:39,645 INFO    SenderThread:27339 [dir_watcher.py:finish():313] scan: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files
+2021-10-04 21:35:39,645 INFO    SenderThread:27339 [dir_watcher.py:finish():327] scan save: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/requirements.txt requirements.txt
+2021-10-04 21:35:39,645 INFO    SenderThread:27339 [dir_watcher.py:finish():327] scan save: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/output.log output.log
+2021-10-04 21:35:39,648 INFO    SenderThread:27339 [dir_watcher.py:finish():327] scan save: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/config.yaml config.yaml
+2021-10-04 21:35:39,649 INFO    SenderThread:27339 [dir_watcher.py:finish():327] scan save: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/wandb-summary.json wandb-summary.json
+2021-10-04 21:35:39,652 INFO    SenderThread:27339 [dir_watcher.py:finish():327] scan save: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/conda-environment.yaml conda-environment.yaml
+2021-10-04 21:35:39,658 INFO    SenderThread:27339 [dir_watcher.py:finish():327] scan save: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/wandb-metadata.json wandb-metadata.json
+2021-10-04 21:35:39,659 INFO    SenderThread:27339 [sender.py:transition_state():319] send defer: 6
+2021-10-04 21:35:39,659 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: poll_exit
+2021-10-04 21:35:39,660 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: defer
+2021-10-04 21:35:39,660 INFO    HandlerThread:27339 [handler.py:handle_request_defer():143] handle defer: 6
+2021-10-04 21:35:39,662 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: defer
+2021-10-04 21:35:39,663 INFO    SenderThread:27339 [sender.py:send_request_defer():315] handle sender defer: 6
+2021-10-04 21:35:39,663 INFO    SenderThread:27339 [file_pusher.py:finish():177] shutting down file pusher
+2021-10-04 21:35:39,767 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: poll_exit
+2021-10-04 21:35:39,767 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: poll_exit
+2021-10-04 21:35:39,874 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: poll_exit
+2021-10-04 21:35:39,874 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: poll_exit
+2021-10-04 21:35:39,980 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: poll_exit
+2021-10-04 21:35:39,980 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: poll_exit
+2021-10-04 21:35:40,087 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: poll_exit
+2021-10-04 21:35:40,088 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: poll_exit
+2021-10-04 21:35:40,189 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: poll_exit
+2021-10-04 21:35:40,190 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: poll_exit
+2021-10-04 21:35:40,295 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: poll_exit
+2021-10-04 21:35:40,295 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: poll_exit
+2021-10-04 21:35:40,402 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: poll_exit
+2021-10-04 21:35:40,402 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: poll_exit
+2021-10-04 21:35:40,445 INFO    Thread-12 :27339 [upload_job.py:push():137] Uploaded file /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/requirements.txt
+2021-10-04 21:35:40,471 INFO    Thread-13 :27339 [upload_job.py:push():137] Uploaded file /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/output.log
+2021-10-04 21:35:40,475 INFO    Thread-14 :27339 [upload_job.py:push():137] Uploaded file /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/config.yaml
+2021-10-04 21:35:40,489 INFO    Thread-15 :27339 [upload_job.py:push():137] Uploaded file /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/wandb-summary.json
+2021-10-04 21:35:40,501 INFO    Thread-16 :27339 [upload_job.py:push():137] Uploaded file /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/files/conda-environment.yaml
+2021-10-04 21:35:40,508 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: poll_exit
+2021-10-04 21:35:40,509 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: poll_exit
+2021-10-04 21:35:40,615 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: poll_exit
+2021-10-04 21:35:40,616 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: poll_exit
+2021-10-04 21:35:40,707 INFO    Thread-7  :27339 [sender.py:transition_state():319] send defer: 7
+2021-10-04 21:35:40,708 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: defer
+2021-10-04 21:35:40,708 INFO    HandlerThread:27339 [handler.py:handle_request_defer():143] handle defer: 7
+2021-10-04 21:35:40,709 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: defer
+2021-10-04 21:35:40,709 INFO    SenderThread:27339 [sender.py:send_request_defer():315] handle sender defer: 7
+2021-10-04 21:35:40,721 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: poll_exit
+2021-10-04 21:35:41,428 INFO    SenderThread:27339 [sender.py:transition_state():319] send defer: 8
+2021-10-04 21:35:41,430 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: poll_exit
+2021-10-04 21:35:41,431 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: defer
+2021-10-04 21:35:41,431 INFO    HandlerThread:27339 [handler.py:handle_request_defer():143] handle defer: 8
+2021-10-04 21:35:41,432 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: defer
+2021-10-04 21:35:41,433 INFO    SenderThread:27339 [sender.py:send_request_defer():315] handle sender defer: 8
+2021-10-04 21:35:41,433 INFO    SenderThread:27339 [sender.py:transition_state():319] send defer: 9
+2021-10-04 21:35:41,434 DEBUG   SenderThread:27339 [sender.py:send():185] send: final
+2021-10-04 21:35:41,434 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: defer
+2021-10-04 21:35:41,434 DEBUG   SenderThread:27339 [sender.py:send():185] send: footer
+2021-10-04 21:35:41,434 INFO    HandlerThread:27339 [handler.py:handle_request_defer():143] handle defer: 9
+2021-10-04 21:35:41,434 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: defer
+2021-10-04 21:35:41,435 INFO    SenderThread:27339 [sender.py:send_request_defer():315] handle sender defer: 9
+2021-10-04 21:35:41,537 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: poll_exit
+2021-10-04 21:35:41,537 DEBUG   SenderThread:27339 [sender.py:send_request():199] send_request: poll_exit
+2021-10-04 21:35:41,537 INFO    SenderThread:27339 [file_pusher.py:join():182] waiting for file pusher
+2021-10-04 21:35:42,088 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: get_summary
+2021-10-04 21:35:42,089 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: sampled_history
+2021-10-04 21:35:42,091 DEBUG   HandlerThread:27339 [handler.py:handle_request():126] handle_request: shutdown
+2021-10-04 21:35:42,091 INFO    HandlerThread:27339 [handler.py:finish():683] shutting down handler
+2021-10-04 21:35:42,437 INFO    WriterThread:27339 [datastore.py:close():281] close: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_213523-k5rxb69v/run-k5rxb69v.wandb
+2021-10-04 21:35:43,091 INFO    SenderThread:27339 [sender.py:finish():985] shutting down sender
+2021-10-04 21:35:43,091 INFO    SenderThread:27339 [file_pusher.py:finish():177] shutting down file pusher
+2021-10-04 21:35:43,091 INFO    SenderThread:27339 [file_pusher.py:join():182] waiting for file pusher
+2021-10-04 21:35:43,098 INFO    MainThread:27339 [internal.py:handle_exit():76] Internal process exited

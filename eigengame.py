@@ -7,9 +7,16 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.animation import FuncAnimation
 from scipy.linalg import subspace_angles
 
-xDim = (10000, 3)
+xDim = (10000, 7)
 numStepsPerIteration = 100
-T = 1100
+T = 35000
+gamma = 0.9
+beta = 0.9
+eps = 1e-8
+beta1 = 0.9
+beta2 = 0.999
+distanceTolerance = 0.01
+ascentVariant = "vanilla"
 
 if "-variantC" in sys.argv:
     L = numStepsPerIteration
@@ -31,8 +38,8 @@ else:
         variant = "1a"
 
 numIterations = T//L
-k = 2
-learningRate = 0.001
+k = 7
+learningRate = 0.000005
 tolerance = 10
 
 #Function to return the subspace angle 
@@ -116,7 +123,7 @@ def getPenalty(X, V, i):
         if condition:
             dotProd = (np.dot(np.dot(X, V[:,i]), np.dot(X, V[:,j]))/np.dot(np.dot(X, V[:,j]), np.dot(X, V[:,j])))*np.dot(X,V[:,j]).reshape(-1,1)
             penalty += 10*dotProd
-            penalty += 1*abs(dotProd)
+            # penalty += 1*abs(dotProd)
     return penalty.reshape(-1, 1)
 
 #Function to return the penalty
@@ -174,7 +181,8 @@ def updateEigenVectors(X, V, i, reward, penalty, alpha=learningRate):
     oldVi = V[:,i].copy()
     V[:,i] = V[:,i] + alpha*gradV.reshape(gradV.shape[0],)
     V[:,i] = V[:,i]/np.sqrt(np.sum(V[:,i]**2))
-    # V = checkVectors(V, i, oldVi)
+    if "-checkVectors" in sys.argv:
+        V = checkVectors(V, i, oldVi)
     return V
 
 #Function to find eigenvectors of a given X using Numpy
@@ -201,7 +209,8 @@ def playEigenGame(X, T, k):
             V = np.load(f"Vs_{variant}.npy")[-1]
         else:
             print("Last game not found!\nStarting new game...")
-            V = np.ones((X.shape[1],k))
+            # V = np.ones((X.shape[1],k))
+            V = np.random.rand(X.shape[1],k)
     if "-continueEigenGame" not in sys.argv or V.shape != (X.shape[1], k):
         # V = np.ones((X.shape[1],k))
         # V = np.eye(X.shape[1],k)
@@ -209,20 +218,93 @@ def playEigenGame(X, T, k):
     Vs = [V.copy()]
     iterTimes = [0]      #Array to store time taken for every iteration
     iterTimesSum = 0    #Variable to keep track of total time elapsed
+    if "-momentum" in sys.argv:
+        momentum = 0
+    elif "-nesterov" in sys.argv:
+        momentum = np.zeros(V.shape)
+    elif "-adagrad" in sys.argv or "-rmsprop" in sys.argv:
+        v = 0
+    elif "-adam" in sys.argv:
+        m = 0
+        v = 0
+    
     for t in range(T):
         startIter = time.time()
         for i in range(k):
             for ti in range(L):
                 reward = getReward(X, V, i)
                 penalty = getPenalty(X, V, i)
-                V = updateEigenVectors(X, V, i, reward, penalty)
-            Vs.append(V.copy())
-            stopIter = time.time()
-            timeIter = stopIter - startIter
-            iterTimesSum += timeIter
-            iterTimes.append(iterTimesSum)
-            if "-debug" in sys.argv and not t%100:
-                print(f"{t}/{T} => total time elapsed : {np.around(iterTimesSum,decimals=3)}s")
+                if "-momentum" in sys.argv:
+                    gradV = getGradUtility(X, reward, penalty)
+                    gradV = gradV - np.dot(gradV.T, V[:,i])*V[:,i].reshape(gradV.shape[0],1)
+                    oldVi = V[:,i].copy()
+                    momentum = gamma*momentum + learningRate*gradV.reshape(gradV.shape[0],)
+                    V[:,i] = V[:,i] + momentum
+                    V[:,i] = V[:,i]/np.sqrt(np.sum(V[:,i]**2))
+                    if "-checkVectors" in sys.argv:
+                        V = checkVectors(V, i, oldVi)
+                elif "-nesterov" in sys.argv:
+                    reward = getReward(X, V-gamma*momentum, i)
+                    penalty = getPenalty(X, V-gamma*momentum, i)
+                    gradV = getGradUtility(X, reward, penalty)
+                    gradV = gradV - np.dot(gradV.T, V[:,i])*V[:,i].reshape(gradV.shape[0],1)
+                    oldVi = V[:,i].copy()
+                    momentum = gamma*momentum + learningRate*gradV.reshape(gradV.shape[0],)
+                    V[:,i] = V[:,i] + momentum[:,i]
+                    V[:,i] = V[:,i]/np.sqrt(np.sum(V[:,i]**2))
+                    if "-checkVectors" in sys.argv:
+                        V = checkVectors(V, i, oldVi)
+                elif "-adagrad" in sys.argv:
+                    gradV = getGradUtility(X, reward, penalty)
+                    gradV = gradV - np.dot(gradV.T, V[:,i])*V[:,i].reshape(gradV.shape[0],1)
+                    oldVi = V[:,i].copy()
+                    v = v + gradV**2
+                    V[:,i] = V[:,i] + (learningRate/(np.sqrt(np.linalg.norm(v)+eps)))*gradV.reshape(gradV.shape[0],)
+                    V[:,i] = V[:,i]/np.sqrt(np.sum(V[:,i]**2))
+                    if "-checkVectors" in sys.argv:
+                        V = checkVectors(V, i, oldVi)
+                elif "-rmsprop" in sys.argv:
+                    gradV = getGradUtility(X, reward, penalty)
+                    gradV = gradV - np.dot(gradV.T, V[:,i])*V[:,i].reshape(gradV.shape[0],1)
+                    oldVi = V[:,i].copy()
+                    v = beta*v + (1-beta)*gradV**2
+                    V[:,i] = V[:,i] + (learningRate/(np.sqrt(np.linalg.norm(v)+eps)))*gradV.reshape(gradV.shape[0],)
+                    V[:,i] = V[:,i]/np.sqrt(np.sum(V[:,i]**2))
+                    if "-checkVectors" in sys.argv:
+                        V = checkVectors(V, i, oldVi)
+                elif "-adam" in sys.argv:
+                    gradV = getGradUtility(X, reward, penalty)
+                    gradV = gradV - np.dot(gradV.T, V[:,i])*V[:,i].reshape(gradV.shape[0],1)
+                    oldVi = V[:,i].copy()
+                    m = beta1*m + (1-beta1)*gradV
+                    v = beta2*v + (1-beta2)*(gradV**2)
+                    if t==0:
+                        print(m)
+                        print(v)
+                        print(beta1)
+                        print(beta2)
+                        print(m/(1-beta1**(t+1)))
+                        print(v/(1-beta2**(t+1)))
+                    m /= (1-beta1**(t+1))
+                    v /= (1-beta2**(t+1))
+                    V[:,i] = V[:,i] + (learningRate/(np.sqrt(np.linalg.norm(v)+eps)))*gradV.reshape(gradV.shape[0],)
+                    V[:,i] = V[:,i]/np.sqrt(np.sum(V[:,i]**2))
+                    if "-checkVectors" in sys.argv:
+                        V = checkVectors(V, i, oldVi)
+                else:
+                    V_old = V.copy()
+                    V = updateEigenVectors(X, V, i, reward, penalty)
+                    angleMeasure = (np.dot(np.transpose(V_old[:,i]),V[:,i])/(np.linalg.norm(V_old[:,i])*np.linalg.norm(V[:,i])))
+                    # if not t%100 and i == 0:
+                    #     print(f"{t} => {angleMeasure}")
+
+        Vs.append(V.copy())
+        stopIter = time.time()
+        timeIter = stopIter - startIter
+        iterTimesSum += timeIter
+        iterTimes.append(iterTimesSum)
+        if "-debug" in sys.argv and not t%100:
+            print(f"{t}/{T} => total time elapsed : {np.around(iterTimesSum,decimals=3)}s")
     Vs = np.array(Vs)
     iterTimes = np.array(iterTimes)
     if "-continueEigenGame" in sys.argv:
@@ -236,6 +318,16 @@ def playEigenGame(X, T, k):
     return V
 
 #-------------------------------------------------------------------------------------------------------------------------
+if "-momentum" in sys.argv:
+        ascentVariant = "momentum"
+elif "-nesterov" in sys.argv:
+    ascentVariant = "nesterov"
+elif "-adagrad" in sys.argv:
+    ascentVariant = "adagrad"
+elif "-rmsprop" in sys.argv:
+    ascentVariant = "rmsprop"
+elif "-adam" in sys.argv:
+    ascentVariant = "adam"
 
 if "-continueEigenGame" not in sys.argv:
     if "-repeatedEVtest" in sys.argv:
@@ -262,13 +354,18 @@ else:
     
 if "-printX" in sys.argv:
     print(X)
+if k > X.shape[1]:
+    k = X.shape[1]
 
 if ("-analyseResults" not in sys.argv and "-visualiseResults" not in sys.argv and "-visualiseResultsTogether" not in sys.argv and "-analyseAngles" not in sys.argv and "-analyseAnglesTogether" not in sys.argv) or "-playEigenGame" in sys.argv:
     if "-symmetric" in sys.argv:
-        print(f"Playing the symmetric penalty EigenGame (Variant {variant[-1]})...")
+        print(f"Playing the symmetric penalty EigenGame (variant {variant[-1]}, {ascentVariant})...")
     else:
-        print(f"Playing the asymmetric EigenGame (Variant {variant[-1]})...")
+        print(f"Playing the asymmetric EigenGame (variant {variant[-1]}, {ascentVariant})...")
+    startGame = time.time()
     V = playEigenGame(X, numIterations, k)
+    stopGame = time.time()
+    print(f"Time taken: {stopGame-startGame}s")
     EVs = getEigenVectors(X)
     EVs = rearrange(EVs, V)
     print("EigenVectors obtained through EigenGame:")
@@ -277,6 +374,23 @@ if ("-analyseResults" not in sys.argv and "-visualiseResults" not in sys.argv an
     print(np.around(EVs,decimals=3))
     print(f"Learning Rate : {learningRate}")
     print(f"Distance measure: {np.around(getDistance(V,EVs), decimals=3)}")
+
+    #Finding timee taken for convergence
+    Vs = np.load(f"Vs_{variant}.npy")
+    iterTimes = np.load(f"iterTimes_{variant}.npy")
+    EVs = np.around(getEigenVectors(X),decimals=3)
+    EVs = rearrange(EVs, Vs[-1])
+    convergenceTime = None
+    for i in range(len(Vs)):
+        V = Vs[i]
+        distanceMeasure = np.around(getDistance(V,EVs), decimals=3)
+        if distanceMeasure <= distanceTolerance:
+            convergenceTime = iterTimes[i]
+            break 
+    if convergenceTime == None:
+        print("EigenGame did not converge as per expectation!")
+    else:
+        print(f"Time taken to converge as per expectation: {convergenceTime} s")
 
 if "-analyseResults" in sys.argv:
     Vs = np.load(f"Vs_{variant}.npy")
@@ -296,7 +410,7 @@ if "-analyseResults" in sys.argv:
     plt.plot(diffs)
     plt.xlabel("Iterations")
     plt.ylabel("Distance")
-    plt.title(f"Variant {variant}: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
+    plt.title(f"Variant {variant} ({ascentVariant}): lr = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
     if "-savePlots" in sys.argv or "-saveMode" in sys.argv:
         plt.savefig(f"./plots/distanceVSiterations_{variant}")
     if "-saveMode" not in sys.argv:
@@ -304,7 +418,7 @@ if "-analyseResults" in sys.argv:
     plt.plot(iterTimes, diffs)
     plt.xlabel("Time elapsed (s)")
     plt.ylabel("Distance")
-    plt.title(f"Variant {variant}: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
+    plt.title(f"Variant {variant} ({ascentVariant}): lr = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
     if "-savePlots" in sys.argv or "-saveMode" in sys.argv:
         plt.savefig(f"./plots/distanceVStotalTimeElapsed_{variant}")
     if "-saveMode" not in sys.argv:
@@ -339,7 +453,7 @@ if "-visualiseResults" in sys.argv and "-3D" in sys.argv:
                 maxY = max(maxY, v[1])
                 maxZ = max(maxZ, v[2])
         fig, ax = plt.subplots(subplot_kw=dict(projection="3d"))
-        plt.title(f"Variant {variant}: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
+        plt.title(f"Variant {variant} ({ascentVariant}): lr = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
         fig.text(.5, .05, "\n" + "Obtained eigenvectors (blue): " + str(np.around(Vs[-1][:,pos],decimals=3)) + "\n" + "Expected eigenvector (red): " + str(np.around(EVs[:,pos],decimals=3)), ha='center')
         ax.set_xlabel('X-axis')
         ax.set_ylabel('Y-axis')
@@ -391,7 +505,7 @@ if "-visualiseResultsTogether" in sys.argv and "-3D" in sys.argv:
                 maxZ = max(maxZ, v[2])
 
     fig, ax = plt.subplots(subplot_kw=dict(projection="3d"))
-    plt.title(f"Variant {variant}: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
+    plt.title(f"Variant {variant} ({ascentVariant}): lr = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
     ax.set_xlabel('X-axis')
     ax.set_ylabel('Y-axis')
     ax.set_zlabel('Z-axis')
@@ -432,7 +546,7 @@ if "-analyseAngles" in sys.argv or "-analyseAnglesTogether" in sys.argv:
         angles.append(angle)
     angles = np.array(angles)
     np.save(f"./angles_{variant}.npy",angles)
-    pltTitle = f"Variant {variant}: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}"
+    pltTitle = f"Variant {variant} ({ascentVariant}): lr = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}"
     for i in range(len(angles)):
         plt.xlabel("Iterations")
         plt.ylabel("Angle between obtained EV and expected EV")
@@ -483,7 +597,7 @@ if "-analyseSubspaceAngles" in sys.argv:
         print(EVs[:,1:])
         print(np.rad2deg(subspace_angles(Vs[t], EVs)))
     np.save(f"./subspaceAngles_{variant}.npy",angles)
-    pltTitle = f"Variant {variant}: Learning rate = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}"
+    pltTitle = f"Variant {variant} ({ascentVariant}): lr = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}"
     plt.xlabel("Iterations")
     plt.ylabel("Subspace Angle between obtained EV and expected EV")
     plt.title(pltTitle)

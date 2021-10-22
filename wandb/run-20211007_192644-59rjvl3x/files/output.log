@@ -1,0 +1,18 @@
+
+Playing the asymmetric EigenGame (Variant c, nesterov)...
+eigengame_wandb.py:246: RuntimeWarning: overflow encountered in square
+  V[:,i] = V[:,i]/np.sqrt(np.sum(V[:,i]**2))
+eigengame_wandb.py:128: RuntimeWarning: invalid value encountered in double_scalars
+  dotProd = (np.dot(np.dot(X, V[:,i]), np.dot(X, V[:,j]))/np.dot(np.dot(X, V[:,j]), np.dot(X, V[:,j])))*np.dot(X,V[:,j]).reshape(-1,1)
+Time taken: 10.49557089805603s
+EigenVectors obtained through EigenGame:
+[[nan nan nan]
+ [nan nan nan]
+ [nan nan nan]]
+EigenVectors obtained through numpy:
+[[-0.569 -0.765  0.302]
+ [-0.705  0.642  0.302]
+ [ 0.424  0.041  0.905]]
+Learning Rate : 20
+Distance measure: nan
+Time taken to converge as per expectation: inf s

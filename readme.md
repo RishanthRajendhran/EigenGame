@@ -58,10 +58,52 @@
 </p>
 <p>
     <h4>
+        Variants of gradient ascent used in the EigenGame
+    </h4>
+    <p>
+        In the paper, vanilla gradient ascent is used to perform the gradient updates. There are other variants of gradient ascent popular in machine learning literature such as momentum gradient ascenet, nesterov accelerated gradient ascent, Adaptive gradient ascent etc. Curretly, three such variants (momentum, rmsprop and adagrad) have been implemented in this program. 
+    </p>
+    <p>
+        <h6>
+            Momentum Gradient Ascent 
+        </h6>
+        <p>
+            When performing gradient updates, we can keep track of the cummulative updates made until now and decide where to move based on this cummulative history and current gradient update. We calculate the momentum term (v_t) as follows: <br/>
+            v_t = gamma*v_t-1 + learning_rate*gradTheta <br/>
+            Theta can then be updates as: <br/>
+            Theta = Theta - v_t <br/>
+            Here gamma is a hyperparameter. 
+        </p>
+        <h6>
+            RMSprop Gradient Ascent 
+        </h6>
+        <p>
+            This variant attempts to adapt the learning rate to the parameters, performing smaller updates for frequently occuring features and larger updates for infrequent ones. This works well when working with sparse data. <br/>
+            v_t = gamma*v_t-1 + (1-gamma)*(gradTheta**2) <br/>
+            For feature i, the update is as follows: <br/>
+            Theta_i = Theta_i - (learning_rate/sqrt(v_t_i + eps))*gradTheta_i <br/>
+            Here gamma and eps are hyperparameters. 
+        </p>
+        <h6>
+            Adagrad Gradient Ascent 
+        </h6>
+        <p>
+            This variant attempts to adapt the learning rate to the parameters, performing smaller updates for frequently occuring features and larger updates for infrequent ones. This works well when working with sparse data. <br/>
+            v_t = beta*v_t-1 + (1-beta)*(gradTheta) <br/>
+            For feature i, the update is as follows: <br/>
+            Theta_i = Theta_i - (learning_rate/sqrt(v_t_i + eps))*gradTheta_i <br/>
+            Here beta and eps are hyperparameters. 
+        </p>
+    </p>
+</p>
+<p>
+    <h4>
         Running the program
     </h4>
     The variant of the EigenGame to be played should be mentioned as a flag: "-variantA" (default) / "-variantB" / "-variantC" along with the "-symmetric" flag in case of the game with symmetric penalties<br/>
     When the "-symmetric" flag is not used, the EigenGame defaults to asymmetric penalties<br/>
+    The variant of gradient ascent to be used should be specified as a flag: "-momentum"/"-rmsprop"/"-adagrad"<br/>
+    By default, vanilla gradient ascent is performed<br/>
     Run the program with the flag "-generateX" if you want to generate X before playing the eigengame<br/>
     The "-printX" flag should be used to print the X being used in the eigenGame<br/>
     The "-repeatedEVtest" / "-repeatedEVtest2" flag should be used to use the hard-coded matrix X with repeated eigenvalues for the eigenGame<br/>
@@ -71,6 +113,7 @@
     Try experimenting with different powers of 10 for the learning rate<br/>
     The program has to be run with the "-symmetric" flag to use the symmetric penalties<br/>
     To continue the from where the last played eigengame stopped, use the "-continueEigenGame" flag<br/>
+    The "-checkVectors" flag when used runs the checkVector routine after every update. The checkVector routine is intended to break up players moving in the same direction <br/>
     The program stores players' positions (read calculated eigenvectors) after every iteration of update in the file "Vs_{variant_here}.npy"<br/>
     The program stores total time elapsed since start of the game after every iteration of update in the file "iterTimes_{variant_here}.npy"<br/>
     Distance between the calculated eigenvectors after every iteration of update during the eigengame and the actual eigenvectors (obtained through numpy) vs the number of iterations and total time elapsed since the start of the game can be plotted by using the "-analyseResults" flag<br/>

@@ -1,0 +1,25 @@
+2021-10-06 19:21:11,740 INFO    MainThread:68017 [wandb_setup.py:_flush():69] setting env: {'entity': 'rishanthrajendhran', 'project': 'eigengame', 'sweep_id': 'muts3d2m', 'root_dir': '/Users/rishanthrajendhran/Desktop/EigenGame', 'run_id': '2mhz9yr0', 'sweep_param_path': '/Users/rishanthrajendhran/Desktop/EigenGame/wandb/sweep-muts3d2m/config-2mhz9yr0.yaml'}
+2021-10-06 19:21:11,740 INFO    MainThread:68017 [wandb_setup.py:_flush():69] setting login settings: {}
+2021-10-06 19:21:11,740 INFO    MainThread:68017 [wandb_init.py:_log_setup():348] Logging user logs to /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211006_192111-2mhz9yr0/logs/debug.log
+2021-10-06 19:21:11,741 INFO    MainThread:68017 [wandb_init.py:_log_setup():349] Logging internal logs to /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211006_192111-2mhz9yr0/logs/debug-internal.log
+2021-10-06 19:21:11,741 INFO    MainThread:68017 [wandb_init.py:init():381] calling init triggers
+2021-10-06 19:21:11,741 INFO    MainThread:68017 [wandb_init.py:init():388] wandb.init called with sweep_config: {'learningRate': 1e-10, 'numStepsPerIteration': 100}
+config: {'xDim': (10000, 5), 'numIterations': 35000, 'numStepsPerIteration': 100, 'k': 5, 'learningRate': 1, 'flags': ['-rmsprop'], 'isSymmetric': False, 'variant': 'c', 'tolerance': 10, 'distanceTolerance': 0.01}
+2021-10-06 19:21:11,741 INFO    MainThread:68017 [wandb_init.py:init():430] starting backend
+2021-10-06 19:21:11,741 INFO    MainThread:68017 [backend.py:_multiprocessing_setup():72] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2021-10-06 19:21:11,753 INFO    MainThread:68017 [backend.py:ensure_launched():135] starting backend process...
+2021-10-06 19:21:11,759 INFO    MainThread:68017 [backend.py:ensure_launched():140] started backend process with pid: 68027
+2021-10-06 19:21:11,762 INFO    MainThread:68017 [wandb_init.py:init():435] backend started and connected
+2021-10-06 19:21:11,763 INFO    MainThread:68017 [wandb_run.py:_config_callback():847] config_cb None None {'learningRate': 1e-10, 'numStepsPerIteration': 100}
+2021-10-06 19:21:11,764 INFO    MainThread:68017 [wandb_init.py:init():494] updated telemetry
+2021-10-06 19:21:11,766 INFO    MainThread:68017 [wandb_init.py:init():517] communicating current version
+2021-10-06 19:21:12,510 INFO    MainThread:68017 [wandb_init.py:init():522] got version response upgrade_message: "wandb version 0.12.4 is available!  To upgrade, please run:\n $ pip install wandb --upgrade"
+
+2021-10-06 19:21:12,510 INFO    MainThread:68017 [wandb_init.py:init():530] communicating run to backend with 30 second timeout
+2021-10-06 19:21:12,917 INFO    MainThread:68017 [wandb_init.py:init():557] starting run threads in backend
+2021-10-06 19:21:17,938 INFO    MainThread:68017 [wandb_run.py:_console_start():1605] atexit reg
+2021-10-06 19:21:17,939 INFO    MainThread:68017 [wandb_run.py:_redirect():1479] redirect: SettingsConsole.REDIRECT
+2021-10-06 19:21:17,939 INFO    MainThread:68017 [wandb_run.py:_redirect():1484] Redirecting console.
+2021-10-06 19:21:17,941 INFO    MainThread:68017 [wandb_run.py:_redirect():1540] Redirects installed.
+2021-10-06 19:21:17,941 INFO    MainThread:68017 [wandb_init.py:init():582] run started, returning control to user process
+2021-10-06 19:22:52,681 INFO    MainThread:68017 [wandb_run.py:finish():1275] finishing run rishanthrajendhran/eigengame/2mhz9yr0

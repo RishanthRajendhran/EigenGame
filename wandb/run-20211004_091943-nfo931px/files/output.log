@@ -1,0 +1,8 @@
+
+Playing the asymmetric EigenGame (Variant c)...
+Traceback (most recent call last):
+  File "eigengame_wandb.py", line 261, in <module>
+    V = playEigenGame(X, numIterations, k)
+  File "eigengame_wandb.py", line 217, in playEigenGame
+    momentum = gamma*momentum + learningRate*gradV.reshape(gradV.shape[0],)
+NameError: name 'gamma' is not defined

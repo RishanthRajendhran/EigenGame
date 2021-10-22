@@ -1,0 +1,64 @@
+2021-10-04 16:23:37,916 INFO    MainThread:3037 [internal.py:wandb_internal():89] W&B internal server running at pid: 3037, started at: 2021-10-04 16:23:37.916443
+2021-10-04 16:23:37,918 INFO    WriterThread:3037 [datastore.py:open_for_write():77] open: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/run-6uj9jyit.wandb
+2021-10-04 16:23:37,918 DEBUG   HandlerThread:3037 [handler.py:handle_request():126] handle_request: check_version
+2021-10-04 16:23:37,920 DEBUG   SenderThread:3037 [sender.py:send():185] send: header
+2021-10-04 16:23:37,921 DEBUG   SenderThread:3037 [sender.py:send_request():199] send_request: check_version
+2021-10-04 16:23:38,070 DEBUG   SenderThread:3037 [sender.py:send():185] send: run
+2021-10-04 16:23:38,449 INFO    SenderThread:3037 [dir_watcher.py:__init__():169] watching files in: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files
+2021-10-04 16:23:38,450 INFO    SenderThread:3037 [sender.py:_start_run_threads():749] run started: 6uj9jyit with start time 1633344817
+2021-10-04 16:23:38,450 DEBUG   SenderThread:3037 [sender.py:send():185] send: summary
+2021-10-04 16:23:38,450 INFO    SenderThread:3037 [sender.py:_save_file():879] saving file wandb-summary.json with policy end
+2021-10-04 16:23:38,451 DEBUG   HandlerThread:3037 [handler.py:handle_request():126] handle_request: run_start
+2021-10-04 16:23:39,754 INFO    Thread-8  :3037 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files/wandb-summary.json
+2021-10-04 16:23:42,596 DEBUG   HandlerThread:3037 [meta.py:__init__():40] meta init
+2021-10-04 16:23:42,597 DEBUG   HandlerThread:3037 [meta.py:__init__():54] meta init done
+2021-10-04 16:23:42,597 DEBUG   HandlerThread:3037 [meta.py:probe():211] probe
+2021-10-04 16:23:42,599 DEBUG   HandlerThread:3037 [meta.py:_setup_git():201] setup git
+2021-10-04 16:23:42,628 DEBUG   HandlerThread:3037 [meta.py:_setup_git():208] setup git done
+2021-10-04 16:23:42,629 DEBUG   HandlerThread:3037 [meta.py:_save_pip():58] save pip
+2021-10-04 16:23:42,632 DEBUG   HandlerThread:3037 [meta.py:_save_pip():72] save pip done
+2021-10-04 16:23:42,632 DEBUG   HandlerThread:3037 [meta.py:_save_conda():79] save conda
+2021-10-04 16:23:42,770 INFO    Thread-8  :3037 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files/conda-environment.yaml
+2021-10-04 16:23:42,772 INFO    Thread-8  :3037 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files/requirements.txt
+2021-10-04 16:23:43,771 INFO    Thread-8  :3037 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files/output.log
+2021-10-04 16:23:45,776 INFO    Thread-8  :3037 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files/output.log
+2021-10-04 16:23:52,790 INFO    Thread-8  :3037 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files/conda-environment.yaml
+2021-10-04 16:23:52,821 DEBUG   HandlerThread:3037 [meta.py:_save_conda():87] save conda done
+2021-10-04 16:23:52,821 DEBUG   HandlerThread:3037 [meta.py:probe():249] probe done
+2021-10-04 16:23:52,829 DEBUG   HandlerThread:3037 [handler.py:handle_request():126] handle_request: stop_status
+2021-10-04 16:23:52,829 DEBUG   SenderThread:3037 [sender.py:send_request():199] send_request: stop_status
+2021-10-04 16:23:53,113 DEBUG   SenderThread:3037 [sender.py:send():185] send: run
+2021-10-04 16:23:53,489 INFO    SenderThread:3037 [sender.py:send_run():643] updated run: 6uj9jyit
+2021-10-04 16:23:53,489 DEBUG   SenderThread:3037 [sender.py:send():185] send: files
+2021-10-04 16:23:53,489 INFO    SenderThread:3037 [sender.py:_save_file():879] saving file [10000, 5]_35000_5_5e-05 with policy live
+2021-10-04 16:23:53,491 DEBUG   SenderThread:3037 [sender.py:send():185] send: files
+2021-10-04 16:23:53,493 INFO    SenderThread:3037 [sender.py:_save_file():879] saving file wandb-metadata.json with policy now
+2021-10-04 16:23:53,796 INFO    Thread-8  :3037 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files/config.yaml
+2021-10-04 16:23:53,799 INFO    Thread-8  :3037 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files/wandb-metadata.json
+2021-10-04 16:23:54,405 INFO    Thread-11 :3037 [upload_job.py:push():137] Uploaded file /var/folders/7m/2n3lfqqn4p9cb73mtczw0fy00000gn/T/tmp1_5kg1vzwandb/njq47vkv-wandb-metadata.json
+2021-10-04 16:24:08,114 DEBUG   HandlerThread:3037 [handler.py:handle_request():126] handle_request: stop_status
+2021-10-04 16:24:08,115 DEBUG   SenderThread:3037 [sender.py:send_request():199] send_request: stop_status
+2021-10-04 16:24:11,117 DEBUG   SenderThread:3037 [sender.py:send():185] send: stats
+2021-10-04 16:24:23,438 DEBUG   HandlerThread:3037 [handler.py:handle_request():126] handle_request: stop_status
+2021-10-04 16:24:23,439 DEBUG   SenderThread:3037 [sender.py:send_request():199] send_request: stop_status
+2021-10-04 16:24:35,876 WARNING MainThread:3037 [internal.py:is_dead():365] Internal process exiting, parent pid 3026 disappeared
+2021-10-04 16:24:35,877 ERROR   MainThread:3037 [internal.py:wandb_internal():141] Internal process shutdown.
+2021-10-04 16:24:36,172 INFO    WriterThread:3037 [datastore.py:close():281] close: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/run-6uj9jyit.wandb
+2021-10-04 16:24:36,818 INFO    SenderThread:3037 [sender.py:finish():985] shutting down sender
+2021-10-04 16:24:36,820 INFO    SenderThread:3037 [dir_watcher.py:finish():283] shutting down directory watcher
+2021-10-04 16:24:36,823 INFO    HandlerThread:3037 [handler.py:finish():683] shutting down handler
+2021-10-04 16:24:36,929 INFO    SenderThread:3037 [dir_watcher.py:finish():313] scan: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files
+2021-10-04 16:24:36,929 INFO    SenderThread:3037 [dir_watcher.py:finish():327] scan save: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files/requirements.txt requirements.txt
+2021-10-04 16:24:36,929 INFO    SenderThread:3037 [dir_watcher.py:finish():327] scan save: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files/output.log output.log
+2021-10-04 16:24:36,938 INFO    SenderThread:3037 [dir_watcher.py:finish():327] scan save: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files/config.yaml config.yaml
+2021-10-04 16:24:36,967 INFO    SenderThread:3037 [dir_watcher.py:finish():327] scan save: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files/wandb-summary.json wandb-summary.json
+2021-10-04 16:24:36,971 INFO    SenderThread:3037 [dir_watcher.py:finish():327] scan save: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files/conda-environment.yaml conda-environment.yaml
+2021-10-04 16:24:36,981 INFO    SenderThread:3037 [dir_watcher.py:finish():327] scan save: /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files/wandb-metadata.json wandb-metadata.json
+2021-10-04 16:24:36,982 INFO    SenderThread:3037 [file_pusher.py:finish():177] shutting down file pusher
+2021-10-04 16:24:36,982 INFO    SenderThread:3037 [file_pusher.py:join():182] waiting for file pusher
+2021-10-04 16:24:37,941 INFO    Thread-14 :3037 [upload_job.py:push():137] Uploaded file /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files/config.yaml
+2021-10-04 16:24:37,941 INFO    Thread-12 :3037 [upload_job.py:push():137] Uploaded file /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files/requirements.txt
+2021-10-04 16:24:37,947 INFO    Thread-16 :3037 [upload_job.py:push():137] Uploaded file /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files/conda-environment.yaml
+2021-10-04 16:24:37,947 INFO    Thread-13 :3037 [upload_job.py:push():137] Uploaded file /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files/output.log
+2021-10-04 16:24:37,948 INFO    Thread-15 :3037 [upload_job.py:push():137] Uploaded file /Users/rishanthrajendhran/Desktop/EigenGame/wandb/run-20211004_162337-6uj9jyit/files/wandb-summary.json
+2021-10-04 16:24:38,862 INFO    MainThread:3037 [internal.py:handle_exit():76] Internal process exited
