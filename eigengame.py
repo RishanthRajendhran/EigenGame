@@ -9,13 +9,13 @@ from scipy.linalg import subspace_angles
 
 xDim = (10000, 7)
 numStepsPerIteration = 100
-T = 35000
+T = 350000
 gamma = 0.9
 beta = 0.9
 eps = 1e-8
 beta1 = 0.9
 beta2 = 0.999
-distanceTolerance = 0.01
+distanceTolerance = 0.022
 ascentVariant = "vanilla"
 
 if "-variantC" in sys.argv:
@@ -39,7 +39,7 @@ else:
 
 numIterations = T//L
 k = 7
-learningRate = 0.000005
+learningRate = 0.01
 tolerance = 10
 
 #Function to return the subspace angle 

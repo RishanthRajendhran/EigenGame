@@ -10,9 +10,9 @@ hyperparameter_defaults = dict(
     numStepsPerIteration = 100,
     k = 7,
     learningRate = 1,
-    flags = ["-momentum"],
+    flags = ["-rmsprop"],
     isSymmetric = False,
-    variant = "c",
+    variant = "b",
     tolerance = 10,
     distanceTolerance = 0.01
 )
