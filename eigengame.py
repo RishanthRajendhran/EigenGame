@@ -6,10 +6,11 @@ import os.path
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.animation import FuncAnimation
 from scipy.linalg import subspace_angles
+from heapq import heapify, heappush, heappop
 
-xDim = (10000, 7)
-numStepsPerIteration = 100
-T = 350000
+xDim = (10000, 15)
+numStepsPerIteration = 200
+T = 1000000
 gamma = 0.9
 beta = 0.9
 eps = 1e-8
@@ -17,30 +18,46 @@ beta1 = 0.9
 beta2 = 0.999
 distanceTolerance = 0.022
 ascentVariant = "vanilla"
+variant = "1c"
+angularThreshold = 0.5 
+
+if "-symmetric" in sys.argv:
+    variant = "2"
+else:
+    variant = "1"
 
 if "-variantC" in sys.argv:
     L = numStepsPerIteration
-    if "-symmetric" in sys.argv:
-        variant = "2c"
-    else:
-        variant = "1c"
+    variant += "c"
 elif "-variantB" in sys.argv:
     L = 1
-    if "-symmetric" in sys.argv:
-        variant = "2b"
-    else:
-        variant = "1b"
+    variant += "b"
 else:
     L = T
-    if "-symmetric" in sys.argv:
-        variant = "2a"
-    else:
-        variant = "1a"
+    variant += "a"
+
+if "-momentum" in sys.argv:
+    ascentVariant = "momentum"
+elif "-rmsprop" in sys.argv:
+    ascentVariant = "rmsprop"
+elif "-adagrad" in sys.argv:
+    ascentVariant = "adagrad"
 
 numIterations = T//L
-k = 7
-learningRate = 0.01
+k = 15
+learningRate = 5e-6
 tolerance = 10
+
+#Function to get the angle (in degrees) between two vectors u and v 
+#Inputs 
+#   u       - Numpy column array
+#   v       - Numpy column array
+#Outputs
+#   Returns angle between the vectors in degree measure 
+def getAngle(u, v):
+    u /= np.linalg.norm(u)
+    v /= np.linalg.norm(v)
+    return np.rad2deg(np.arccos(np.clip(np.dot(u,v),-1.0,1.0)))
 
 #Function to return the subspace angle 
 # between current player positions (current eigenvalues) 
@@ -51,8 +68,49 @@ tolerance = 10
 #   i   - Current player
 #Outputs
 #   Returns a scalar angular measure
-def getDistance(V, EVs):
-    return np.sum(subspace_angles(V[:,:i+1], EVs[:, :i+1]))      
+def getSubspaceAngle(V, EVs):
+    return np.sum(subspace_angles(V[:,:i+1], EVs[:, :i+1]))  
+
+#Function to return the length of the longest correct eigenvectors streak (LCES)
+#Inputs
+#   EVs - Numpy array of Expected final player positions
+#   Vs   - Numpy array of Current player positions
+#Outputs
+#   Returns an array, of length equal to number of iterations of the eigengame played,
+#   containing the LCES at every iteration of the game. This array also gets saved as 
+#   "LCES_<variant>.npy" in the current working directory for purpose of future analysis. 
+def computeLongestCorrectEigenvectorsStreak(EVs, Vs):
+    E = rearrange(EVs, Vs[-1])
+    streakCounts = []
+    for t in range(Vs.shape[0]):
+        curStreak = 0
+        V = Vs[t]
+        for i in range(E.shape[1]):
+            if getAngle(E[:,i], V[:,i]) <= angularThreshold or getAngle(E[:,i], -V[:,i]) <= angularThreshold:
+                curStreak += 1
+            else:
+                break 
+        streakCounts.append(curStreak)
+    if "-continueEigenGame" in sys.argv:
+        LCES_old = np.load(f"LCES_{variant}_{ascentVariant}.npy")
+        np.append(LCES_old, np.array(streakCounts), 0)
+        np.save(f"LCES_{variant}_{ascentVariant}.npy", LCES_old)  
+        iterTimes = np.load(f"./iterTimes_{variant}_{ascentVariant}.npy")
+        plt.plot(iterTimes, LCES_old)
+        plt.xlabel("Time elapsed (s)")
+        plt.ylabel("LCES")
+        plt.title(f"Variant {variant} ({ascentVariant}): lr = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
+        plt.savefig(f"./LCES/LCES_{variant}_{ascentVariant}")
+        return LCES_old 
+    else:
+        np.save(f"LCES_{variant}_{ascentVariant}.npy", streakCounts) 
+        iterTimes = np.load(f"./iterTimes_{variant}_{ascentVariant}.npy")
+        plt.plot(iterTimes, streakCounts)   
+        plt.xlabel("Time elapsed (s)")
+        plt.ylabel("LCES")
+        plt.title(f"Variant {variant} ({ascentVariant}): lr = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}")
+        plt.savefig(f"./LCES/LCES_{variant}_{ascentVariant}")
+        return streakCounts
 
 #Function to return the distance measure 
 # between current player positions (current eigenvalues) 
@@ -72,29 +130,85 @@ def getDistance(V, EVs):
 #Outputs
 #   Returns rearranged A matrix
 def rearrange(A, B):
+    bLen = len(B.shape)
+    if bLen == 3:
+        B = B[-1]
+    elif bLen != 2:
+        print("Unexpected size for B in rearrange")
+        exit(0)
     toRet = B.copy()
     newA = A.copy()
-    for i in range(A.shape[1]):
-        a = A[:,i]
+    for i in range(B.shape[1]):
+        b = B[:,i].copy()
         minDist = np.inf 
-        minCol = i 
-        isNeg = False
-        for j in range(B.shape[1]):
-            b = np.around(B[:,j],decimals=3).copy()
-            dist = getDistance(a, b)
-            distNeg = getDistance(a, -b)
+        minCol = None 
+        isNeg = False 
+        for j in range(A.shape[1]):
+            a = A[:,j].copy()
+            dist = getDistance(b, a)
+            distNeg = getDistance(b, -a)
             if dist < distNeg and dist < minDist:
                 minDist = dist 
-                minCol = j
-                isNeg = False
-            elif distNeg < minDist:
+                minCol = j 
+                isNeg = False 
+            elif distNeg < minDist and distNeg < minDist:
                 minDist = distNeg 
-                minCol = j
-                isNeg = True
-        newA[:,minCol] = (not isNeg)*A[:,i].copy() - isNeg*A[:,i].copy()
-    for i in range(toRet.shape[1]):
-        toRet[:,i] = newA[:, i]
+                minCol = j 
+                isNeg = True 
+        toRet[:,i] = (not isNeg)*A[:,minCol].copy() - isNeg*A[:,minCol].copy()  
     return toRet
+    # toRet = B.copy()
+    # heaps = [[]]*B.shape[1]
+    # for i in range(B.shape[1]):
+    #     heapify(heaps[i])
+    #     b = B[:,i].copy()
+    #     for j in range(A.shape[1]):
+    #         a = A[:,j].copy()
+    #         dist = getDistance(b, a)
+    #         distNeg = getDistance(b, -a)
+    #         isNeg = False 
+    #         curMinDist = dist
+    #         if distNeg < dist:
+    #             isNeg = True 
+    #             curMinDist = distNeg
+    #         heappush(heaps[i], (curMinDist, j, isNeg))
+    # alreadyMatched = [False]*(B.shape[1])
+    # for i in range(B.shape[1]):
+    #     minEntry = None
+    #     while True:
+    #         minEntry = heappop(heaps[i])
+    #         if not alreadyMatched[minEntry[1]]:
+    #             alreadyMatched[minEntry[1]] = True
+    #             break
+    #     minCol = minEntry[1]
+    #     isNeg = minEntry[2]
+    #     toRet[:,i] = (not isNeg)*A[:,minCol].copy() - isNeg*A[:,minCol].copy()  
+    # return toRet
+
+# def rearrange(A, B):
+#     toRet = B.copy()
+#     newA = A.copy()
+#     for i in range(A.shape[1]):
+#         a = A[:,i]
+#         minDist = np.inf 
+#         minCol = i 
+#         isNeg = False
+#         for j in range(B.shape[1]):
+#             b = np.around(B[:,j],decimals=3).copy()
+#             dist = getDistance(a, b)
+#             distNeg = getDistance(a, -b)
+#             if dist < distNeg and dist < minDist:
+#                 minDist = dist 
+#                 minCol = j
+#                 isNeg = False
+#             elif distNeg < minDist:
+#                 minDist = distNeg 
+#                 minCol = j
+#                 isNeg = True
+#         newA[:,minCol] = (not isNeg)*A[:,i].copy() - isNeg*A[:,i].copy()
+#     for i in range(toRet.shape[1]):
+#         toRet[:,i] = newA[:, i]
+#     return toRet
 
 #Function to return the reward
 #Inputs
@@ -135,15 +249,6 @@ def getPenalty(X, V, i):
 #   Returns a vector gradient of dimension X.shape[1]  x 1
 def getGradUtility(X, reward, penalty):
     return 2*np.dot(X.T,(reward - penalty))
-
-#Function to get the angle (in degrees) between two vectors u and v 
-#Inputs 
-#   u       - Numpy column array
-#   v       - Numpy column array
-#Outputs
-#   Returns angle between the vectors in degree measure 
-def getAngle(u, v):
-    return np.rad2deg(np.arccos(np.dot(u.T,v)/(np.linalg.norm(u)*np.linalg.norm(v))))
 
 #Function to check is current player is close to previous players 
 #If it is the case, reinitialise current player and return the new set of player positions
@@ -205,8 +310,8 @@ def playEigenGame(X, T, k):
     V = None
     if "-continueEigenGame" in sys.argv:
         print("Continuing the last game...")
-        if os.path.exists(f"Vs_{variant}.npy") and os.path.isfile(f"Vs_{variant}.npy"):
-            V = np.load(f"Vs_{variant}.npy")[-1]
+        if os.path.exists(f"Vs_{variant}_{ascentVariant}.npy") and os.path.isfile(f"Vs_{variant}_{ascentVariant}.npy"):
+            V = np.load(f"Vs_{variant}_{ascentVariant}.npy")[-1]
         else:
             print("Last game not found!\nStarting new game...")
             # V = np.ones((X.shape[1],k))
@@ -308,13 +413,13 @@ def playEigenGame(X, T, k):
     Vs = np.array(Vs)
     iterTimes = np.array(iterTimes)
     if "-continueEigenGame" in sys.argv:
-        oldVs = np.load(f"Vs_{variant}.npy")
-        oldIterTimes = np.load(f"iterTimes_{variant}.npy")
+        oldVs = np.load(f"Vs_{variant}_{ascentVariant}.npy")
+        oldIterTimes = np.load(f"iterTimes_{variant}_{ascentVariant}.npy")
         Vs = np.append(oldVs, Vs.copy(),0)
         iterTimes = iterTimes + np.sum(oldIterTimes)
         iterTimes = np.append(oldIterTimes, iterTimes.copy(),0)
-    np.save(f"Vs_{variant}.npy",Vs)
-    np.save(f"iterTimes_{variant}.npy",iterTimes)
+    np.save(f"Vs_{variant}_{ascentVariant}.npy",Vs)
+    np.save(f"iterTimes_{variant}_{ascentVariant}.npy",iterTimes)
     return V
 
 #-------------------------------------------------------------------------------------------------------------------------
@@ -375,9 +480,9 @@ if ("-analyseResults" not in sys.argv and "-visualiseResults" not in sys.argv an
     print(f"Learning Rate : {learningRate}")
     print(f"Distance measure: {np.around(getDistance(V,EVs), decimals=3)}")
 
-    #Finding timee taken for convergence
-    Vs = np.load(f"Vs_{variant}.npy")
-    iterTimes = np.load(f"iterTimes_{variant}.npy")
+    #Finding time taken for convergence
+    Vs = np.load(f"Vs_{variant}_{ascentVariant}.npy")
+    iterTimes = np.load(f"iterTimes_{variant}_{ascentVariant}.npy")
     EVs = np.around(getEigenVectors(X),decimals=3)
     EVs = rearrange(EVs, Vs[-1])
     convergenceTime = None
@@ -392,9 +497,25 @@ if ("-analyseResults" not in sys.argv and "-visualiseResults" not in sys.argv an
     else:
         print(f"Time taken to converge as per expectation: {convergenceTime} s")
 
+if "-computeLCES" in sys.argv:
+    Vs = np.load(f"Vs_{variant}_{ascentVariant}.npy")
+    EVs = np.around(getEigenVectors(X),decimals=3)
+    EVs = rearrange(EVs, Vs[-1])
+    print("EigenVectors obtained through EigenGame:")
+    for V in Vs:
+        diffs.append(getDistance(V,EVs))
+        if "-debug" in sys.argv:
+            print(np.around(V,decimals=3))
+    if "debug" not in sys.argv:
+        print(np.around(Vs[-1],decimals=3))
+    print("\nEigenVectors obtained through numpy:")
+    print(np.around(EVs,decimals=3))
+    LCES = computeLongestCorrectEigenvectorsStreak(EVs, Vs)
+    print(f"Sum of LCES at the end of {len(LCES)} iterations: {sum(LCES)}")
+
 if "-analyseResults" in sys.argv:
-    Vs = np.load(f"Vs_{variant}.npy")
-    iterTimes = np.load(f"iterTimes_{variant}.npy")
+    Vs = np.load(f"Vs_{variant}_{ascentVariant}.npy")
+    iterTimes = np.load(f"iterTimes_{variant}_{ascentVariant}.npy")
     EVs = np.around(getEigenVectors(X),decimals=3)
     EVs = rearrange(EVs, Vs[-1])
     diffs = []
@@ -425,7 +546,7 @@ if "-analyseResults" in sys.argv:
         plt.show()
 
 if "-visualiseResults" in sys.argv and "-3D" in sys.argv:
-    Vs = np.load(f"./Vs_{variant}.npy")
+    Vs = np.load(f"./Vs_{variant}_{ascentVariant}.npy")
     if Vs[-1].shape[0] != 3:
         print("Only 3D visualisations allowed!")
         exit(0)
@@ -463,6 +584,18 @@ if "-visualiseResults" in sys.argv and "-3D" in sys.argv:
         ax.set_xlim(minX-0.1, maxX+0.1)
         ax.set_ylim(minY-0.1, maxY+0.1)
         ax.set_zlim(minZ-0.1, maxZ+0.1)
+
+        # r = 1
+        # pi = np.pi
+        # cos = np.cos
+        # sin = np.sin
+        # phi, theta = np.mgrid[0.0:pi:100j, 0.0:2.0*pi:100j]
+        # x = r*sin(phi)*cos(theta)
+        # y = r*sin(phi)*sin(theta)
+        # z = r*cos(phi)
+        # ax.plot_surface(
+        # x, y, z,  rstride=1, cstride=1, color='c', alpha=0.3, linewidth=0)
+
         def update(i):
             global quiver 
             quiver.remove()
@@ -476,7 +609,7 @@ if "-visualiseResults" in sys.argv and "-3D" in sys.argv:
             print("Visualisation saved successfully!")
 
 if "-visualiseResultsTogether" in sys.argv and "-3D" in sys.argv:
-    Vs = np.load(f"./Vs_{variant}.npy")
+    Vs = np.load(f"./Vs_{variant}_{ascentVariant}.npy")
 
     if Vs[-1].shape[0] != 3:
         print("Only 3D visualisations allowed!")
@@ -533,8 +666,8 @@ if "-visualiseResultsTogether" in sys.argv and "-3D" in sys.argv:
         print("Visualisation saved successfully!")
 
 if "-analyseAngles" in sys.argv or "-analyseAnglesTogether" in sys.argv:
-    Vs = np.load(f"./Vs_{variant}.npy")
-    iterTimes = np.load(f"./iterTimes_{variant}.npy")
+    Vs = np.load(f"./Vs_{variant}_{ascentVariant}.npy")
+    iterTimes = np.load(f"./iterTimes_{variant}_{ascentVariant}.npy")
     EVs = np.linalg.eig(np.dot(X.T,X))[1]
     EVs = rearrange(EVs, Vs[-1])
     angles = []
@@ -545,7 +678,7 @@ if "-analyseAngles" in sys.argv or "-analyseAnglesTogether" in sys.argv:
             angle.append((np.dot(np.transpose(curV),EVs[:,col])/(np.linalg.norm(curV)*np.linalg.norm(EVs[:,col]))))
         angles.append(angle)
     angles = np.array(angles)
-    np.save(f"./angles_{variant}.npy",angles)
+    np.save(f"./angles_{variant}_{ascentVariant}.npy",angles)
     pltTitle = f"Variant {variant} ({ascentVariant}): lr = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}"
     for i in range(len(angles)):
         plt.xlabel("Iterations")
@@ -580,8 +713,8 @@ if "-analyseAngles" in sys.argv or "-analyseAnglesTogether" in sys.argv:
             plt.show()
 
 if "-analyseSubspaceAngles" in sys.argv:
-    Vs = np.load(f"./Vs_{variant}.npy")
-    iterTimes = np.load(f"./iterTimes_{variant}.npy")
+    Vs = np.load(f"./Vs_{variant}_{ascentVariant}.npy")
+    iterTimes = np.load(f"./iterTimes_{variant}_{ascentVariant}.npy")
     EVs = np.linalg.eig(np.dot(X.T,X))[1]
     EVs = rearrange(EVs, Vs[-1])
     angles = []
@@ -596,7 +729,7 @@ if "-analyseSubspaceAngles" in sys.argv:
         print(Vs[t][:,:2])
         print(EVs[:,1:])
         print(np.rad2deg(subspace_angles(Vs[t], EVs)))
-    np.save(f"./subspaceAngles_{variant}.npy",angles)
+    np.save(f"./subspaceAngles_{variant}_{ascentVariant}.npy",angles)
     pltTitle = f"Variant {variant} ({ascentVariant}): lr = {learningRate}, xDim = {xDim}, k = {k},L = {L}, T = {numIterations}"
     plt.xlabel("Iterations")
     plt.ylabel("Subspace Angle between obtained EV and expected EV")
@@ -615,3 +748,6 @@ if "-analyseSubspaceAngles" in sys.argv:
         plt.savefig(f"./plots/subspaceAnglesVStotalTimeElapsed_{variant}")
     if "-saveMode" not in sys.argv:
         plt.show()
+
+
+

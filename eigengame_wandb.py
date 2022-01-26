@@ -10,7 +10,7 @@ hyperparameter_defaults = dict(
     numStepsPerIteration = 100,
     k = 7,
     learningRate = 1,
-    flags = ["-rmsprop"],
+    flags = ["-momentum"],
     isSymmetric = False,
     variant = "b",
     tolerance = 10,
@@ -76,28 +76,32 @@ def getDistance(V, EVs):
 #Outputs
 #   Returns rearranged A matrix
 def rearrange(A, B):
+    bLen = len(B.shape)
+    if bLen == 3:
+        B = B[-1]
+    elif bLen != 2:
+        print("Unexpected size for B in rearrange")
+        exit(0)
     toRet = B.copy()
     newA = A.copy()
-    for i in range(A.shape[1]):
-        a = A[:,i]
+    for i in range(B.shape[1]):
+        b = B[:,i].copy()
         minDist = np.inf 
-        minCol = i 
-        isNeg = False
-        for j in range(B.shape[1]):
-            b = np.around(B[:,j],decimals=3).copy()
-            dist = getDistance(a, b)
-            distNeg = getDistance(a, -b)
+        minCol = None 
+        isNeg = False 
+        for j in range(A.shape[1]):
+            a = A[:,j].copy()
+            dist = getDistance(b, a)
+            distNeg = getDistance(b, -a)
             if dist < distNeg and dist < minDist:
                 minDist = dist 
-                minCol = j
-                isNeg = False
-            elif distNeg < minDist:
+                minCol = j 
+                isNeg = False 
+            elif distNeg < minDist and distNeg < minDist:
                 minDist = distNeg 
-                minCol = j
-                isNeg = True
-        newA[:,minCol] = (not isNeg)*A[:,i].copy() - isNeg*A[:,i].copy()
-    for i in range(toRet.shape[1]):
-        toRet[:,i] = newA[:, i]
+                minCol = j 
+                isNeg = True 
+        toRet[:,i] = (not isNeg)*A[:,minCol].copy() - isNeg*A[:,minCol].copy()  
     return toRet
 
 #Function to return the reward
