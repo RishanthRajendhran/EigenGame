@@ -136,10 +136,10 @@
     <ul>
         <li>
             <h6>
-                -playEigenGame
+                -playEigenGame (default)
             </h6>
             <p>
-            
+                Plays the EigenGame 
             </p>
         </li>
         <li>
@@ -147,7 +147,7 @@
                 -continueEigenGame
             </h6>
             <p>
-
+                Continues the last played EigenGame
             </p>
         </li>
         <li>
@@ -155,7 +155,7 @@
                 -repeatedEVtest / -repeatedEVtest2
             </h6>
             <p>
-
+                Uses the hardcoded matrices with repeated EigenValues to play the EigenGame
             </p>
         </li>
         <li>
@@ -163,7 +163,7 @@
                 -generateX
             </h6>
             <p>
-
+                Generates a new matrix of specified dimensions and stores it in "X.npy" before playing the EigenGame
             </p>
         </li>
         <li>
@@ -171,7 +171,7 @@
                 -printX
             </h6>
             <p>
-
+                Prints the matrix in the "X.npy" file; this file contains the matrix being used in the current EigenGame, if the EigenGame is being played, or the matrix used in the last EigenGame, if the EigenGame is not being played. 
             </p>
         </li>
         <li>
@@ -179,7 +179,7 @@
                 -debug
             </h6>
             <p>
-
+                Prints degub information
             </p>
         </li>
         <li>
@@ -187,7 +187,7 @@
                 -symmetric
             </h6>
             <p>
-
+                Plays the symmetric EigenGame
             </p>
         </li>
         <li>
@@ -195,23 +195,23 @@
                 -checkVectors
             </h6>
             <p>
-
+                Performs check on the players after every iteration to see if they are closer than a specified threshold to other players and if they are, values (for that player) are reset to what it was in the previous iteration
             </p>
         </li>
         <li>
             <h6>
-                -variantA / -variantB / -variantC
+                -variantA (default) / -variantB / -variantC
             </h6>
             <p>
-
+                Specifies the variant of the EigenGame 
             </p>
         </li>
         <li>
             <h6>
-                -vanilla / -momentum / -rmsprop / -adagrad
+                -vanilla (default) / -momentum / -rmsprop / -adagrad
             </h6>
             <p>
-
+                Specifies the gradient ascent variant
             </p>
         </li>
         <li>
@@ -219,7 +219,7 @@
                 -computeLCES
             </h6>
             <p>
-
+                Computes the Longest Common EigenVectors Streak for the last played EigenGame and saves the plot of LCES vs time elapsed
             </p>
         </li>
         <li>
@@ -227,7 +227,7 @@
                 -analyseResults
             </h6>
             <p>
-
+                Plots the (distance) vs (number of iterations / time elapsed) for the last played EigenGame
             </p>
         </li>
         <li>
@@ -235,7 +235,7 @@
                 -analyseAngles
             </h6>
             <p>
-
+                Plots the (angles) vs (time elapsed) for the last played EigenGame on per-player basis
             </p>
         </li>
         <li>
@@ -243,7 +243,7 @@
                 -analyseAnglesTogether
             </h6>
             <p>
-
+                Plots the (angles) vs (time elapsed) for the last played EigenGame for all players together in a single plot
             </p>
         </li>
         <li>
@@ -251,7 +251,7 @@
                 -visualiseResults -3D
             </h6>
             <p>
-
+                Visualises in 3D the players across iterations of the last played EigenGame on per-player basis
             </p>
         </li>
         <li>
@@ -259,15 +259,15 @@
                 -visualiseResultsTogether -3D
             </h6>
             <p>
-
+                Visualises in 3D the players across iterations of the last played EigenGame for all players together in a single visualisation
             </p>
         </li>
         <li>
             <h6>
-                -highSpeed / -mediumSpeed / -lowSpeed
+                -highSpeed (default) / -mediumSpeed / -lowSpeed
             </h6>
             <p>
-
+                Specifies the speed of the visualisation
             </p>
         </li>
         <li>
@@ -275,7 +275,7 @@
                 -analyseSubspaceAngles
             </h6>
             <p>
-
+                Plots the (subspace angles) vs (time elapsed) for the last played EigenGame 
             </p>
         </li>
         <li>
@@ -283,7 +283,15 @@
                 -savePlots
             </h6>
             <p>
-
+                Saves the plots generated (if any) in the current run
+            </p>
+        </li>
+        <li>
+            <h6>
+                -saveVisualisations
+            </h6>
+            <p>
+                Saves the visualisations generated (if any) in the current run
             </p>
         </li>
         <li>
@@ -291,7 +299,7 @@
                 -saveMode
             </h6>
             <p>
-
+                Saves the plots and visualisations generated (if any) in the current run without showing them during the run
             </p>
         </li>
     </ul>

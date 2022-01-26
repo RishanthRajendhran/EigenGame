@@ -506,7 +506,7 @@ if "-computeLCES" in sys.argv:
         diffs.append(getDistance(V,EVs))
         if "-debug" in sys.argv:
             print(np.around(V,decimals=3))
-    if "debug" not in sys.argv:
+    if "-debug" not in sys.argv:
         print(np.around(Vs[-1],decimals=3))
     print("\nEigenVectors obtained through numpy:")
     print(np.around(EVs,decimals=3))
@@ -524,7 +524,7 @@ if "-analyseResults" in sys.argv:
         diffs.append(getDistance(V,EVs))
         if "-debug" in sys.argv:
             print(np.around(V,decimals=3))
-    if "debug" not in sys.argv:
+    if "-debug" not in sys.argv:
         print(np.around(Vs[-1],decimals=3))
     print("\nEigenVectors obtained through numpy:")
     print(np.around(EVs,decimals=3))
