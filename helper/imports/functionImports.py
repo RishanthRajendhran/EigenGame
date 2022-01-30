@@ -14,4 +14,7 @@ from helper.functions.analyseResults import analyseResults
 from helper.functions.visualiseResults import visualiseResults
 from helper.functions.visualiseResultsTogether import visualiseResultsTogether
 from helper.functions.analyseAngles import analyseAngles
+from helper.functions.analyseAnglesTogether import analyseAnglesTogether
 from helper.functions.analyseSubspaceAngles import analyseSubspaceAngles
+from helper.functions.getLocation import getLocation
+from helper.functions.getConvergenceInfo import getConvergenceInfo

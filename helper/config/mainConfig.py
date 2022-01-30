@@ -1,4 +1,5 @@
-xDim = (10, 7)
-k = 7
-variant = "1c"
+xDim = (3, 3)
+k = 3
+variant = "1b"
 L = 1
+stopIteration = 0

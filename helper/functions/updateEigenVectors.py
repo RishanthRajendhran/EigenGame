@@ -1,6 +1,7 @@
 from helper.imports.mainImports import *
 from helper.imports.functionImports import *
 import helper.config.gradientAscentConfig as gaConfig
+import helper.config.miscellaneousConfig as mlConfig
 
 #Function to update eigenvectors 
 #Inputs 

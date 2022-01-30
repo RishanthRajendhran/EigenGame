@@ -5,6 +5,8 @@ from helper.imports.functionImports import *
 #Inputs 
 #   X   - Numpy array of the dataset
 #Outputs
-#   Returns all the eigenvectors of V as a matrix of dimensions X.shape[1] x X.shape[1]
+#   Returns all the EigenVectors of V as a matrix of dimensions X.shape[1] x X.shape[1] 
+#   in the order of decreasing EigenValues
 def getEigenVectors(X):
-    return np.linalg.eig(np.dot(X.T, X))[1]
+    E, V = np.linalg.eig(np.dot(X.T, X))
+    return V[:,np.argsort(E)[::-1]]

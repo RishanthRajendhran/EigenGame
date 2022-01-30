@@ -70,6 +70,7 @@ if ("-analyseResults" not in sys.argv
         and "-analyseAnglesTogether" not in sys.argv 
         and "-analyseSubspaceAngles" not in sys.argv
         and "-computeLCES" not in sys.argv
+        and "-postGameAnalysis" not in sys.argv
     ) or "-playEigenGame" in sys.argv or "-continueEigenGame" in sys.argv:
 
     if "-symmetric" in sys.argv:
@@ -89,40 +90,64 @@ if ("-analyseResults" not in sys.argv
     print(f"Learning Rate : {gaConfig.learningRate}")
     print(f"Distance measure: {np.around(getDistance(V,EVs), decimals=3)}")
 
-    #Finding time taken for convergence
-    Vs = np.load(f"Vs_{config.variant}_{gaConfig.ascentVariant}.npy")
-    iterTimes = np.load(f"iterTimes_{config.variant}_{gaConfig.ascentVariant}.npy")
-    EVs = np.around(getEigenVectors(X),decimals=3)
-    EVs = rearrange(EVs, Vs[-1])
-    convergenceTime = None
-    for i in range(len(Vs)):
-        V = Vs[i]
-        distanceMeasure = np.around(getDistance(V,EVs), decimals=3)
-        if distanceMeasure <= thConfig.distanceTolerance:
-            convergenceTime = iterTimes[i]
-            break 
+    convergenceTime, distanceMeasure = getConvergenceInfo()
+
     if convergenceTime == None:
         print("EigenGame did not converge as per expectation!")
     else:
         print(f"Time taken to converge as per expectation: {convergenceTime} s")
+        toDocument = {
+            "timeStamp" : datetime.datetime.now().strftime('%d_%m_%Y_%H_%M_%S'),
+            "xDim": config.xDim,
+            "variant": config.variant,
+            "ascentVariant": gaConfig.ascentVariant,
+            "learningRate": gaConfig.learningRate,
+            "T": gaConfig.T,
+            "L": config.L,
+            "convergenceTime": convergenceTime,
+            "distanceMeasure": distanceMeasure
+        }
+        with open(f'history_{config.xDim}.txt', 'a') as convert_file:
+            convert_file.write(json.dumps(toDocument, indent=4))
+        with open('history.txt', 'a') as convert_file:
+            convert_file.write(json.dumps(toDocument, indent=4))
+else:
+    convergenceTime, distanceMeasure = getConvergenceInfo()
 
-if "-computeLCES" in sys.argv:
-    LCES = computeLCES(X)
-    print(f"Sum of LCES at the end of {len(LCES)} iterations: {sum(LCES)}")
-
-if "-analyseResults" in sys.argv:
+if "-analyseResults" in sys.argv or "-postGameAnalysis" in sys.argv:
+    if "-postGameAnalysis" in sys.argv:
+        print("-analyseResults")
     analyseResults(X)
 
-if "-visualiseResults" in sys.argv and "-3D" in sys.argv:
+if "-visualiseResults" in sys.argv or "-postGameAnalysis" in sys.argv:
+    if "-postGameAnalysis" in sys.argv:
+        print("-visualiseResults")
     visualiseResults(X)
 
-if "-visualiseResultsTogether" in sys.argv and "-3D" in sys.argv:
+if "-visualiseResultsTogether" in sys.argv or "-postGameAnalysis" in sys.argv:
+    if "-postGameAnalysis" in sys.argv:
+        print("-visualiseResultsTogether")
     visualiseResultsTogether(X)
 
-if "-analyseAngles" in sys.argv or "-analyseAnglesTogether" in sys.argv:
+if "-analyseAngles" in sys.argv or "-postGameAnalysis" in sys.argv:
+    if "-postGameAnalysis" in sys.argv:
+        print("-analyseAngles")
     analyseAngles(X)
+
+if "-analyseAnglesTogether" in sys.argv or "-postGameAnalysis" in sys.argv:
+    if "-postGameAnalysis" in sys.argv:
+        print("-analyseAnglesTogether")
+    analyseAnglesTogether(X)
+
+if "-computeLCES" in sys.argv or "-postGameAnalysis" in sys.argv:
+    if "-postGameAnalysis" in sys.argv:
+        print("-computeLCES")
+    LCES = computeLCES(X)
+    print(f"Sum of LCES at the end of {len(LCES)} iterations: {sum(LCES)} (Max possible: {config.k*len(LCES)})")
     
 #UNDER CONSTRUCTION
 if "-analyseSubspaceAngles" in sys.argv:
+    if "-postGameAnalysis" in sys.argv:
+        print("-analyseSubspaceAngles")
     analyseSubspaceAngles(X)
     

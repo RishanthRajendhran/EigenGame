@@ -20,20 +20,22 @@ def playEigenGame(X, T, k = config.k):
             V = np.load(f"Vs_{config.variant}_{gaConfig.ascentVariant}.npy")[-1]
         else:
             print("Last game not found!\nStarting new game...")
+            V = np.full((X.shape[1],config.k), 0.000001)
             # V = np.ones((X.shape[1],config.k))
             # V = np.eye(X.shape[1],config.k)
             # V = np.random.rand(X.shape[1],config.k)
-            V = np.load("V_random_initialisation.npy")
-            if V.shape != config.xDim:
-                V = np.random.rand(X.shape[1],config.k)
-                np.save("V_random_initialisation.npy",V)
+            # V = np.load("V_random_initialisation.npy")
+            # if V.shape != (X.shape[1],config.k):
+            #     V = np.random.rand(X.shape[1],config.k)
+            #     np.save("V_random_initialisation.npy",V)
     if "-continueEigenGame" not in sys.argv or V.shape != (X.shape[1], config.k):
+        V = np.full((X.shape[1],config.k), 0.000001)
         # V = np.ones((X.shape[1],config.k))
         # V = np.eye(X.shape[1],config.k)
-        V = np.load("V_random_initialisation.npy")
-        if V.shape != config.xDim:
-            V = np.random.rand(X.shape[1],config.k)
-            np.save("V_random_initialisation.npy",V)
+        # V = np.load("V_random_initialisation.npy")
+        # if V.shape != (X.shape[1],config.k):
+        #     V = np.random.rand(X.shape[1],config.k)
+        #     np.save("V_random_initialisation.npy",V)
     Vs = [V.copy()]
     iterTimes = [0]      #Array to store time taken for every iteration
     iterTimesSum = 0    #Variable to keep track of total time elapsed
@@ -48,8 +50,8 @@ def playEigenGame(X, T, k = config.k):
         v = 0
 
     for t in range(T):
-        startIter = time.time()
         for i in range(config.k):
+            startIter = time.time()
             for ti in range(config.L):
                 reward = getReward(X, V, i)
                 penalty = getPenalty(X, V, i)
@@ -111,11 +113,11 @@ def playEigenGame(X, T, k = config.k):
                     # if not t%100 and i == 0:
                     #     print(f"{t} => {angleMeasure}")
 
-        Vs.append(V.copy())
-        stopIter = time.time()
-        timeIter = stopIter - startIter
-        iterTimesSum += timeIter
-        iterTimes.append(iterTimesSum)
+            Vs.append(V.copy())
+            stopIter = time.time()
+            timeIter = stopIter - startIter
+            iterTimesSum += timeIter
+            iterTimes.append(iterTimesSum)
         if "-debug" in sys.argv and not t%100:
             print(f"{t}/{T} => total time elapsed : {np.around(iterTimesSum,decimals=3)}s")
     Vs = np.array(Vs)
@@ -124,7 +126,7 @@ def playEigenGame(X, T, k = config.k):
         oldVs = np.load(f"Vs_{config.variant}_{gaConfig.ascentVariant}.npy")
         oldIterTimes = np.load(f"iterTimes_{config.variant}_{gaConfig.ascentVariant}.npy")
         Vs = np.append(oldVs, Vs.copy(),0)
-        iterTimes = iterTimes + np.sum(oldIterTimes)
+        iterTimes = iterTimes + oldIterTimes[-1]
         iterTimes = np.append(oldIterTimes, iterTimes.copy(),0)
     np.save(f"Vs_{config.variant}_{gaConfig.ascentVariant}.npy",Vs)
     np.save(f"iterTimes_{config.variant}_{gaConfig.ascentVariant}.npy",iterTimes)

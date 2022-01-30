@@ -1,3 +1,3 @@
 distanceTolerance = 0.022
-angularThreshold = 0.5 
+angularThreshold = 1.5
 tolerance = 10 

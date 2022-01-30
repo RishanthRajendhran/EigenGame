@@ -1,5 +1,5 @@
 from helper.imports.mainImports import *
-from helper.imports.functionImports import *
+import helper.imports.functionImports as fns
 import helper.config.mainConfig as config
 import helper.config.gradientAscentConfig as gaConfig
 
@@ -14,15 +14,15 @@ def visualiseResults(X):
     Vs = np.load(f"Vs_{config.variant}_{gaConfig.ascentVariant}.npy")
     if Vs[-1].shape[0] != 3:
         print("Only 3D visualisations allowed!")
-        exit(0)
+        return
     visualisationSpeed = 1         #Default speed : highSpeed
     if "-mediumSpeed" in sys.argv:
         visualisationSpeed = 500 
-    elif "-lowSpeed" in sys.argv:
+    elif "-lowSpeed" in sys.argv or (("-saveMode" in sys.argv or "-saveVisualisations" in sys.argv) and "-highSpeed" not in sys.argv):
         visualisationSpeed = 1000
 
-    EVs = np.around(getEigenVectors(X),decimals=3)
-    EVs = rearrange(EVs, Vs[-1])
+    EVs = np.around(fns.getEigenVectors(X),decimals=3)
+    EVs = fns.rearrange(EVs, Vs[-1])
     for pos in range(Vs[-1].shape[1]):
         V = []
         minX, minY, minZ = 0, 0, 0
@@ -53,10 +53,11 @@ def visualiseResults(X):
             nonlocal quiver 
             quiver.remove()
             quiver = ax.quiver(0, 0, 0, V[i][0], V[i][1], V[i][2])
-        ani = FuncAnimation(fig, update, frames=np.arange(len(V)), interval=visualisationSpeed)
+        ani = FuncAnimation(fig, update, frames=np.arange(min(config.stopIteration, len(V))), interval=visualisationSpeed, repeat=False)
         if "-saveMode" not in sys.argv:
             plt.show()
         if "-saveVisualisations" in sys.argv or "-saveMode" in sys.argv:
             print("Saving visualisation. Might take a while...")
-            ani.save(f'./visualisations/eigenVector{pos}_{config.variant}_{gaConfig.ascentVariant}.mp4')
+            ani.save(f'{fns.getLocation("./visualisations")}eigenVector{pos}_{config.variant}_{gaConfig.ascentVariant}.mp4')
             print("Visualisation saved successfully!")
+    plt.clf()

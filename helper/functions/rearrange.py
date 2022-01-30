@@ -1,6 +1,8 @@
 from helper.imports.mainImports import *
 from helper.imports.functionImports import *
 
+#Erroneous implementation
+#Need to implement maximum matching in a bipartite graph
 #Function to rearrange columns of matrix A based on their closest matching column index in matrix B
 #Inputs 
 #   A   - Matrix whose columns have to be rearranged
@@ -8,6 +10,20 @@ from helper.imports.functionImports import *
 #Outputs
 #   Returns rearranged A matrix
 def rearrange(A, B):
+    # dists = []
+    # for i in range(B.shape[1]):
+    #     dist = []
+    #     b = B[:,i].copy()
+    #     for j in range(A.shape[1]):
+    #         a = A[:, j].copy()
+    #         dist.append(min(getDistance(a, b), getDistance(-a, b)))
+    #     dists.append(dist)
+    # dist = np.array(dist)
+    # resverseDists = np.zeros(dist.shape)
+    # for i in range(dist.shape[0]):
+    #     for j in range(dist.shape[1]):
+    #         resverseDists[i][j] = dists[j][i]
+
     bLen = len(B.shape)
     if bLen == 3:
         B = B[-1]
@@ -16,6 +32,7 @@ def rearrange(A, B):
         exit(0)
     toRet = B.copy()
     newA = A.copy()
+    alreadyAllotted = [0]*A.shape[1]
     for i in range(B.shape[1]):
         b = B[:,i].copy()
         minDist = np.inf 
@@ -25,14 +42,15 @@ def rearrange(A, B):
             a = A[:,j].copy()
             dist = getDistance(b, a)
             distNeg = getDistance(b, -a)
-            if dist < distNeg and dist < minDist:
+            if dist < distNeg and dist < minDist and alreadyAllotted[j] == 0:
                 minDist = dist 
                 minCol = j 
                 isNeg = False 
-            elif distNeg < minDist and distNeg < minDist:
+            elif distNeg < minDist and distNeg < minDist and alreadyAllotted[j] == 0:
                 minDist = distNeg 
                 minCol = j 
                 isNeg = True 
+        alreadyAllotted[minCol] = 1
         toRet[:,i] = (not isNeg)*A[:,minCol].copy() - isNeg*A[:,minCol].copy()  
     return toRet
     # toRet = B.copy()

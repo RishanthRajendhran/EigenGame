@@ -1,6 +1,7 @@
 from helper.imports.mainImports import *
 from helper.imports.functionImports import *
 import helper.config.mainConfig as config
+import helper.config.gradientAscentConfig as gaConfig
 import helper.config.miscellaneousConfig as mlConfig
 
 #Function to return the penalty
@@ -19,11 +20,10 @@ def getPenalty(X, V, i):
             condition = j != i
         if condition:
             dotProd = (np.dot(np.dot(X, V[:,i]), np.dot(X, V[:,j]))/np.dot(np.dot(X, V[:,j]), np.dot(X, V[:,j])))*np.dot(X,V[:,j]).reshape(-1,1)
-            if mlConfig.hasConverged[j] > 100:
-                penalty += 50*dotProd
+            if mlConfig.hasConverged[j] > gaConfig.T/100:
+                penalty += gaConfig.extraPenaltyCoefficient*dotProd
             else:
-                penalty += 10*dotProd
-            # penalty += 1*abs(dotProd)
+                penalty += gaConfig.penaltyCoefficient*dotProd
     return penalty.reshape(-1, 1)
 
     
