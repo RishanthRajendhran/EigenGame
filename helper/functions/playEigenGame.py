@@ -30,6 +30,12 @@ def playEigenGame(X, T, k = config.k):
             #     np.save("V_random_initialisation.npy",V)
     if "-continueEigenGame" not in sys.argv or V.shape != (X.shape[1], config.k):
         V = np.full((X.shape[1],config.k), 0.000001)
+        # V = np.linalg.eig(X)[1]
+        # V = np.array([
+        #     [-0.686, 0.718, -0.113], 
+        #     [0.691, 0.597, -0.407], 
+        #     [0.225, 0.358, 0.906]
+        # ])
         # V = np.ones((X.shape[1],config.k))
         # V = np.eye(X.shape[1],config.k)
         # V = np.load("V_random_initialisation.npy")
@@ -51,8 +57,8 @@ def playEigenGame(X, T, k = config.k):
 
     for t in range(T):
         for i in range(config.k):
-            startIter = time.time()
             for ti in range(config.L):
+                startIter = time.time()
                 reward = getReward(X, V, i)
                 penalty = getPenalty(X, V, i)
                 if "-momentum" in sys.argv:
@@ -109,15 +115,15 @@ def playEigenGame(X, T, k = config.k):
                 else:
                     V_old = V.copy()
                     V = updateEigenVectors(X, V, i, reward, penalty)
-                    angleMeasure = (np.dot(np.transpose(V_old[:,i]),V[:,i])/(np.linalg.norm(V_old[:,i])*np.linalg.norm(V[:,i])))
+                    # angleMeasure = (np.dot(np.transpose(V_old[:,i]),V[:,i])/(np.linalg.norm(V_old[:,i])*np.linalg.norm(V[:,i])))
                     # if not t%100 and i == 0:
                     #     print(f"{t} => {angleMeasure}")
 
-            Vs.append(V.copy())
-            stopIter = time.time()
-            timeIter = stopIter - startIter
-            iterTimesSum += timeIter
-            iterTimes.append(iterTimesSum)
+                Vs.append(V.copy())
+                stopIter = time.time()
+                timeIter = stopIter - startIter
+                iterTimesSum += timeIter
+                iterTimes.append(iterTimesSum)
         if "-debug" in sys.argv and not t%100:
             print(f"{t}/{T} => total time elapsed : {np.around(iterTimesSum,decimals=3)}s")
     Vs = np.array(Vs)

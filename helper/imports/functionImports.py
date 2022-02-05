@@ -18,3 +18,6 @@ from helper.functions.analyseAnglesTogether import analyseAnglesTogether
 from helper.functions.analyseSubspaceAngles import analyseSubspaceAngles
 from helper.functions.getLocation import getLocation
 from helper.functions.getConvergenceInfo import getConvergenceInfo
+from helper.functions.slerp import slerp
+from helper.functions.visualiseTrajectory import visualiseTrajectory
+from helper.functions.visualiseTrajectoryTogether import visualiseTrajectoryTogether

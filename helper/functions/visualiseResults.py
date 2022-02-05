@@ -24,11 +24,12 @@ def visualiseResults(X):
     EVs = np.around(fns.getEigenVectors(X),decimals=3)
     EVs = fns.rearrange(EVs, Vs[-1])
     for pos in range(Vs[-1].shape[1]):
+        Vs = np.load(f"Vs{pos}_{config.variant}_{gaConfig.ascentVariant}.npy")
         V = []
         minX, minY, minZ = 0, 0, 0
         maxX, maxY, maxZ = 0, 0, 0
         for i in range(len(Vs)):
-            v = Vs[i][:,pos]
+            v = Vs[i]
             V.append(v)
             if i:
                 minX = min(minX, v[0])
@@ -39,11 +40,11 @@ def visualiseResults(X):
                 maxZ = max(maxZ, v[2])
         fig, ax = plt.subplots(subplot_kw=dict(projection="3d"))
         plt.title(f"Variant {config.variant} ({gaConfig.ascentVariant}): lr = {gaConfig.learningRate}, xDim = {config.xDim}, k = {config.k},L = {config.L}, T = {gaConfig.numIterations}")
-        fig.text(.5, .05, "\n" + "Obtained eigenvectors (blue): " + str(np.around(Vs[-1][:,pos],decimals=3)) + "\n" + "Expected eigenvector (red): " + str(np.around(EVs[:,pos],decimals=3)), ha='center')
+        fig.text(.5, .05, "\n" + "Obtained eigenvectors (blue): " + str(np.around(Vs[-1],decimals=3)) + "\n" + "Expected eigenvector (red): " + str(np.around(EVs[:,pos],decimals=3)), ha='center')
         ax.set_xlabel('X-axis')
         ax.set_ylabel('Y-axis')
         ax.set_zlabel('Z-axis')
-        quiverFinal = ax.quiver(0, 0, 0, V[-1][0], V[-1][1], V[-1][2], color="r")
+        quiverFinal = ax.quiver(0, 0, 0, EVs[:,pos][0], EVs[:,pos][1], EVs[:,pos][2], color="r")
         quiver = ax.quiver(0, 0, 0, V[0][0], V[0][1], V[0][2])
         ax.set_xlim(minX-0.1, maxX+0.1)
         ax.set_ylim(minY-0.1, maxY+0.1)
@@ -53,7 +54,7 @@ def visualiseResults(X):
             nonlocal quiver 
             quiver.remove()
             quiver = ax.quiver(0, 0, 0, V[i][0], V[i][1], V[i][2])
-        ani = FuncAnimation(fig, update, frames=np.arange(min(config.stopIteration, len(V))), interval=visualisationSpeed, repeat=False)
+        ani = FuncAnimation(fig, update, frames=np.arange(len(V)), interval=visualisationSpeed, repeat=False)
         if "-saveMode" not in sys.argv:
             plt.show()
         if "-saveVisualisations" in sys.argv or "-saveMode" in sys.argv:

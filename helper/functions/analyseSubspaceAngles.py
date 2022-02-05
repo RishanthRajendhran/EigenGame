@@ -14,7 +14,7 @@ import helper.config.gradientAscentConfig as gaConfig
 #   Shows the plots to the user
 #   Returns nothing 
 def analyseSubspaceAngles(X):
-    Vs = np.load(f"Vs_{config.variant}_{gaConfig.ascentVariant}.npy")
+    Vs = np.load(f"Vs_modified_{config.variant}_{gaConfig.ascentVariant}.npy")
     iterTimes = np.load(f"iterTimes_{config.variant}_{gaConfig.ascentVariant}.npy")
     EVs = np.around(fns.getEigenVectors(X),decimals=3)
     EVs = fns.rearrange(EVs, Vs[-1])

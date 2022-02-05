@@ -13,7 +13,7 @@ import helper.config.miscellaneousConfig as mlConfig
 #   Returns a vector penalty of dimension X.shape[0] x 1
 def getPenalty(X, V, i):
     M  = np.dot(X.T, X)
-    penalty = np.zeros((X.shape[0], 1))
+    penalty = 0
     for j in range(config.k):
         condition = j < i
         if "-symmetric" in sys.argv:
@@ -24,6 +24,6 @@ def getPenalty(X, V, i):
                 penalty += gaConfig.extraPenaltyCoefficient*dotProd
             else:
                 penalty += gaConfig.penaltyCoefficient*dotProd
-    return penalty.reshape(-1, 1)
+    return penalty
 
     

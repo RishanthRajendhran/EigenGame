@@ -12,7 +12,7 @@ import helper.config.gradientAscentConfig as gaConfig
 #   Shows the visualisations to the user
 #   Returns nothing 
 def visualiseResultsTogether(X):
-    Vs = np.load(f"Vs_{config.variant}_{gaConfig.ascentVariant}.npy")
+    Vs = np.load(f"Vs_modified_{config.variant}_{gaConfig.ascentVariant}.npy")
     if Vs[-1].shape[0] != 3:
         print("Only 3D visualisations allowed!")
         return
@@ -59,7 +59,7 @@ def visualiseResultsTogether(X):
         quivers = []
         for z in range(Vs[-1].shape[1]):
             quivers.append(ax.quiver(0, 0, 0, Vs[i][:,z][0], Vs[i][:,z][1], Vs[i][:,z][2],color="C"+str(z)))
-    ani = FuncAnimation(fig, update, frames=np.arange(min(config.stopIteration, len(Vs))), interval=visualisationSpeed, repeat=False)
+    ani = FuncAnimation(fig, update, frames=np.arange(len(Vs)), interval=visualisationSpeed, repeat=False)
     if "-saveMode" not in sys.argv:
         plt.show()
     if "-saveVisualisations" in sys.argv or "-saveMode" in sys.argv:

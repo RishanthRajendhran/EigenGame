@@ -14,6 +14,15 @@ import helper.config.thresholdConfig as thConfig
 def analyseResults(X):
     Vs = np.load(f"Vs_{config.variant}_{gaConfig.ascentVariant}.npy")
     iterTimes = np.load(f"iterTimes_{config.variant}_{gaConfig.ascentVariant}.npy")
+
+    #The following imports should be avoided as these files do not quite capture the 
+    #ways in which the different variants progress, in the sense that these files
+    #might not show the redundant steps made by the players after they have converged
+    #which is an artifact of the variant (a/b/c) and such plots might not be useful
+    #to make comparisons between variants
+    # Vs = np.load(f"Vs_modified_{config.variant}_{gaConfig.ascentVariant}.npy")
+    # iterTimes = np.load(f"iterTimes_modified_{config.variant}_{gaConfig.ascentVariant}.npy")
+    
     EVs = np.around(fns.getEigenVectors(X),decimals=3)
     EVs = fns.rearrange(EVs, Vs[-1])
     print("EigenVectors obtained through EigenGame:")

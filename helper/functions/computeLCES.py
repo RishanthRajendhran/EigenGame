@@ -31,6 +31,7 @@ def computeLCES(X):
             else:
                 break 
         streakCounts.append(curStreak)
+    plt.clf()
     if "-continueEigenGame" in sys.argv:
         LCES_old = np.load(f"{fns.getLocation('./LCES')}LCES_{config.variant}_{gaConfig.ascentVariant}.npy")
         np.append(LCES_old, np.array(streakCounts), 0)

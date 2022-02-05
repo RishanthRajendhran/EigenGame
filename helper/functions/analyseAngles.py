@@ -29,33 +29,40 @@ def analyseAngles(X):
         print(np.around(EVs,decimals=3))
 
     angles = []
+    elapsedTimes = []
     for col in range(Vs[0].shape[1]):
+        Vs = np.load(f"Vs{col}_{config.variant}_{gaConfig.ascentVariant}.npy")
+        iterTimes = np.load(f"iterTimes{col}_{config.variant}_{gaConfig.ascentVariant}.npy")
         angle = []
-        for t in range(min(config.stopIteration, len(Vs))):
-            curV = Vs[t][:,col]
+        elapsedTime = []
+        for t in range(min(config.stopIterations[col], len(Vs))):
+            curV = Vs[t]
             angle.append((np.dot(np.transpose(curV),EVs[:,col])/(np.linalg.norm(curV)*np.linalg.norm(EVs[:,col]))))
+            elapsedTime.append(iterTimes[t])
         angles.append(angle)
-    angles = np.array(angles)
+        elapsedTimes.append(elapsedTime)
+    angles = np.array(angles, dtype=object)
+    elapsedTimes = np.array(elapsedTimes, dtype=object)
     np.save(f"{fns.getLocation('./angles')}angles_{config.variant}_{gaConfig.ascentVariant}.npy",angles)
     pltTitle = f"Variant {config.variant} ({gaConfig.ascentVariant}): lr = {gaConfig.learningRate}, xDim = {config.xDim}, k = {config.k},L = {config.L}, T = {gaConfig.numIterations}"
     for i in range(len(angles)):
         plt.xlabel("Iterations")
         plt.ylabel("Cosine of the angle between obtained EV and expected EV")
         plt.title(pltTitle)
-        plt.plot(np.arange(len(angles[i])), angles[i], color="C"+str(i))
+        plt.plot(25*np.arange(len(angles[i])), angles[i], color="C"+str(i))
         if "-savePlots" in sys.argv or "-saveMode" in sys.argv:
             plt.savefig(f"{fns.getLocation('./plots')}anglesVSiterations{i}_{config.variant}_{gaConfig.ascentVariant}")
         if "-saveMode" not in sys.argv:
             plt.show()
-    plt.clf()
+        plt.clf()
     
     for i in range(len(angles)):
         plt.xlabel("Time Elapsed")
         plt.ylabel("Cosine of the angle between obtained EV and expected EV")
         plt.title(pltTitle)
-        plt.plot(iterTimes[:len(angles[i])], angles[i], color="C"+str(i))
+        plt.plot(elapsedTimes[i], angles[i], color="C"+str(i))
         if "-savePlots" in sys.argv or "-saveMode" in sys.argv:
             plt.savefig(f'{fns.getLocation("./plots")}anglesVStimeElapsed{i}_{config.variant}_{gaConfig.ascentVariant}')
         if "-saveMode" not in sys.argv:
             plt.show()
-    plt.clf()
+        plt.clf()

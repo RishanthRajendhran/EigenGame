@@ -20,6 +20,8 @@ else:
     config.L = gaConfig.T
     config.variant += "a"
 
+gaConfig.numIterations = gaConfig.T//config.L
+
 if "-momentum" in sys.argv:
          gaConfig.ascentVariant = "momentum"
 elif "-nesterov" in sys.argv:
@@ -71,6 +73,8 @@ if ("-analyseResults" not in sys.argv
         and "-analyseSubspaceAngles" not in sys.argv
         and "-computeLCES" not in sys.argv
         and "-postGameAnalysis" not in sys.argv
+        and "-visualiseTrajectory" not in sys.argv
+        and "-visualiseTrajectoryTogether" not in sys.argv
     ) or "-playEigenGame" in sys.argv or "-continueEigenGame" in sys.argv:
 
     if "-symmetric" in sys.argv:
@@ -102,7 +106,7 @@ if ("-analyseResults" not in sys.argv
             "variant": config.variant,
             "ascentVariant": gaConfig.ascentVariant,
             "learningRate": gaConfig.learningRate,
-            "T": gaConfig.T,
+            "T": gaConfig.numIterations,
             "L": config.L,
             "convergenceTime": convergenceTime,
             "distanceMeasure": distanceMeasure
@@ -119,16 +123,6 @@ if "-analyseResults" in sys.argv or "-postGameAnalysis" in sys.argv:
         print("-analyseResults")
     analyseResults(X)
 
-if "-visualiseResults" in sys.argv or "-postGameAnalysis" in sys.argv:
-    if "-postGameAnalysis" in sys.argv:
-        print("-visualiseResults")
-    visualiseResults(X)
-
-if "-visualiseResultsTogether" in sys.argv or "-postGameAnalysis" in sys.argv:
-    if "-postGameAnalysis" in sys.argv:
-        print("-visualiseResultsTogether")
-    visualiseResultsTogether(X)
-
 if "-analyseAngles" in sys.argv or "-postGameAnalysis" in sys.argv:
     if "-postGameAnalysis" in sys.argv:
         print("-analyseAngles")
@@ -144,7 +138,27 @@ if "-computeLCES" in sys.argv or "-postGameAnalysis" in sys.argv:
         print("-computeLCES")
     LCES = computeLCES(X)
     print(f"Sum of LCES at the end of {len(LCES)} iterations: {sum(LCES)} (Max possible: {config.k*len(LCES)})")
-    
+
+if "-visualiseResults" in sys.argv or "-postGameAnalysis" in sys.argv:
+    if "-postGameAnalysis" in sys.argv:
+        print("-visualiseResults")
+    visualiseResults(X)
+
+if "-visualiseResultsTogether" in sys.argv or "-postGameAnalysis" in sys.argv:
+    if "-postGameAnalysis" in sys.argv:
+        print("-visualiseResultsTogether")
+    visualiseResultsTogether(X)
+
+if "-visualiseTrajectory" in sys.argv or "-postGameAnalysis" in sys.argv:
+    if "-postGameAnalysis" in sys.argv:
+        print("-visualiseTrajectory")
+    visualiseTrajectory(X)
+
+if "-visualiseTrajectoryTogether" in sys.argv or "-postGameAnalysis" in sys.argv:
+    if "-postGameAnalysis" in sys.argv:
+        print("-visualiseTrajectoryTogether")
+    visualiseTrajectoryTogether(X)
+
 #UNDER CONSTRUCTION
 if "-analyseSubspaceAngles" in sys.argv:
     if "-postGameAnalysis" in sys.argv:

@@ -13,6 +13,15 @@ import helper.config.gradientAscentConfig as gaConfig
 def analyseAnglesTogether(X):
     Vs = np.load(f"Vs_{config.variant}_{gaConfig.ascentVariant}.npy")
     iterTimes = np.load(f"iterTimes_{config.variant}_{gaConfig.ascentVariant}.npy")
+
+    #The following imports should be avoided as these files do not quite capture the 
+    #ways in which the different variants progress, in the sense that these files
+    #might not show the redundant steps made by the players after they have converged
+    #which is an artifact of the variant (a/b/c) and such plots might not be useful
+    #to make comparisons between variants
+    # Vs = np.load(f"Vs_modified_{config.variant}_{gaConfig.ascentVariant}.npy")
+    # iterTimes = np.load(f"iterTimes_modified_{config.variant}_{gaConfig.ascentVariant}.npy")
+
     EVs = np.around(fns.getEigenVectors(X),decimals=3)
     EVs = fns.rearrange(EVs, Vs[-1])
     if "-postGameAnalysis" not in sys.argv:
@@ -35,7 +44,6 @@ def analyseAnglesTogether(X):
             curV = Vs[t][:,col]
             angle.append((np.dot(np.transpose(curV),EVs[:,col])/(np.linalg.norm(curV)*np.linalg.norm(EVs[:,col]))))
         angles.append(angle)
-    angles = np.array(angles)
     np.save(f"{fns.getLocation('./angles')}angles_{config.variant}_{gaConfig.ascentVariant}.npy",angles)
     pltTitle = f"Variant {config.variant} ({gaConfig.ascentVariant}): lr = {gaConfig.learningRate}, xDim = {config.xDim}, k = {config.k},L = {config.L}, T = {gaConfig.numIterations}"
     for i in range(len(angles)):
@@ -47,7 +55,7 @@ def analyseAnglesTogether(X):
         plt.savefig(f"{fns.getLocation('./plots')}anglesVSiterations_{config.variant}_{gaConfig.ascentVariant}")
     if "-saveMode" not in sys.argv:
         plt.show()
-    plt.clf()
+        plt.clf()
     
     for i in range(len(angles)):
         plt.xlabel("Time Elapsed")
@@ -58,4 +66,4 @@ def analyseAnglesTogether(X):
         plt.savefig(f"{fns.getLocation('./plots')}anglesVStimeElapsed_{config.variant}_{gaConfig.ascentVariant}")
     if "-saveMode" not in sys.argv:
         plt.show()
-    plt.clf()
+        plt.clf()
