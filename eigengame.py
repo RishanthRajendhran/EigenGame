@@ -40,12 +40,14 @@ if "-continueEigenGame" not in sys.argv:
         X = [[-5,-6,3],[3,4,-3],[0,0,-2]]
         X = np.array(X)
     elif "-repeatedEVtest2" in sys.argv:
-        X = np.load("./repeatedEV_X.npy")
-    elif "-generateX" in sys.argv or not (os.path.exists(f"X_{config.xDim}.npy") and os.path.isfile(f"X_{config.xDim}.npy")):
+        X = np.load("./X/repeatedEV_X.npy")
+    elif "-generateX" in sys.argv or not (os.path.exists(f"./X/X_{config.xDim}.npy") and os.path.isfile(f"./X/X_{config.xDim}.npy")):
         X = np.random.rand(config.xDim[0], config.xDim[1])
-        np.save(f"X_{config.xDim}.npy",X)
-elif not (os.path.exists(f"X_{config.xDim}.npy") and os.path.isfile(f"X_{config.xDim}.npy")):
-    print("Last game's dataset not found!\nStarting new game with new dataset...")
+        np.save(f"./X/X_{config.xDim}.npy",X)
+elif not (os.path.exists(f"./X/X_{config.xDim}.npy") and os.path.isfile(f"./X/X_{config.xDim}.npy")):
+    print("Last game's dataset not found!\nStarting a new game with new dataset...")
+    X = np.random.rand(config.xDim[0], config.xDim[1])
+    np.save(f"./X/X_{config.xDim}.npy",X)
 
 #Load dataset X from f"X_{config.xDim}.npy"
 if "-repeatedEVtest" in sys.argv:
@@ -53,10 +55,10 @@ if "-repeatedEVtest" in sys.argv:
     X = np.array(X)
     config.xDim = X.shape
 elif "-repeatedEVtest2" in sys.argv:
-    X = np.load("./repeatedEV_X.npy")
+    X = np.load("./X/repeatedEV_X.npy")
     config.xDim = X.shape
 else:
-    X = np.load(f"X_{config.xDim}.npy")
+    X = np.load(f"./X/X_{config.xDim}.npy")
     
 if "-printX" in sys.argv:
     print(X)
@@ -111,10 +113,12 @@ if ("-analyseResults" not in sys.argv
             "convergenceTime": convergenceTime,
             "distanceMeasure": distanceMeasure
         }
-        with open(f'history_{config.xDim}.txt', 'a') as convert_file:
-            convert_file.write(json.dumps(toDocument, indent=4))
-        with open('history.txt', 'a') as convert_file:
-            convert_file.write(json.dumps(toDocument, indent=4))
+        with open(f'./history/history_{config.xDim}.txt', 'a', encoding='utf-8') as historyFile:
+            json.dump(toDocument, historyFile, indent=4)
+            historyFile.write("\n")
+        with open('./history/history.txt', 'a', encoding='utf-8') as historyFile:
+            json.dump(toDocument, historyFile, indent=4)
+            historyFile.write("\n")
 else:
     convergenceTime, distanceMeasure = getConvergenceInfo()
 

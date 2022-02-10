@@ -11,16 +11,16 @@ import helper.config.gradientAscentConfig as gaConfig
 #   Shows the plots to the user
 #   Returns nothing 
 def analyseAnglesTogether(X):
-    Vs = np.load(f"Vs_{config.variant}_{gaConfig.ascentVariant}.npy")
-    iterTimes = np.load(f"iterTimes_{config.variant}_{gaConfig.ascentVariant}.npy")
+    Vs = np.load(f"./Vs/Vs_{config.xDim}_{config.variant}_{gaConfig.ascentVariant}.npy")
+    iterTimes = np.load(f"./iterTimes/iterTimes_{config.xDim}_{config.variant}_{gaConfig.ascentVariant}.npy")
 
     #The following imports should be avoided as these files do not quite capture the 
     #ways in which the different variants progress, in the sense that these files
     #might not show the redundant steps made by the players after they have converged
     #which is an artifact of the variant (a/b/c) and such plots might not be useful
     #to make comparisons between variants
-    # Vs = np.load(f"Vs_modified_{config.variant}_{gaConfig.ascentVariant}.npy")
-    # iterTimes = np.load(f"iterTimes_modified_{config.variant}_{gaConfig.ascentVariant}.npy")
+    # Vs = np.load(f"./Vs/Vs_{config.xDim}_modified_{config.variant}_{gaConfig.ascentVariant}.npy")
+    # iterTimes = np.load(f"./iterTimes/iterTimes_modified_{config.variant}_{gaConfig.ascentVariant}.npy")
 
     EVs = np.around(fns.getEigenVectors(X),decimals=3)
     EVs = fns.rearrange(EVs, Vs[-1])
@@ -40,7 +40,7 @@ def analyseAnglesTogether(X):
     angles = []
     for col in range(Vs[0].shape[1]):
         angle = []
-        for t in range(min(config.stopIteration, len(Vs))):
+        for t in range(len(Vs)):
             curV = Vs[t][:,col]
             angle.append((np.dot(np.transpose(curV),EVs[:,col])/(np.linalg.norm(curV)*np.linalg.norm(EVs[:,col]))))
         angles.append(angle)

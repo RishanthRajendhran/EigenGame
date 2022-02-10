@@ -11,7 +11,7 @@ import helper.config.gradientAscentConfig as gaConfig
 #   Shows the visualisations to the user
 #   Returns nothing 
 def visualiseResults(X):
-    Vs = np.load(f"Vs_{config.variant}_{gaConfig.ascentVariant}.npy")
+    Vs = np.load(f"./Vs/Vs_{config.xDim}_{config.variant}_{gaConfig.ascentVariant}.npy")
     if Vs[-1].shape[0] != 3:
         print("Only 3D visualisations allowed!")
         return
@@ -24,7 +24,7 @@ def visualiseResults(X):
     EVs = np.around(fns.getEigenVectors(X),decimals=3)
     EVs = fns.rearrange(EVs, Vs[-1])
     for pos in range(Vs[-1].shape[1]):
-        Vs = np.load(f"Vs{pos}_{config.variant}_{gaConfig.ascentVariant}.npy")
+        Vs = np.load(f"./Vs/Vs_{config.xDim}_{pos}_{config.variant}_{gaConfig.ascentVariant}.npy")
         V = []
         minX, minY, minZ = 0, 0, 0
         maxX, maxY, maxZ = 0, 0, 0
@@ -39,7 +39,7 @@ def visualiseResults(X):
                 maxY = max(maxY, v[1])
                 maxZ = max(maxZ, v[2])
         fig, ax = plt.subplots(subplot_kw=dict(projection="3d"))
-        plt.title(f"Variant {config.variant} ({gaConfig.ascentVariant}): lr = {gaConfig.learningRate}, xDim = {config.xDim}, k = {config.k},L = {config.L}, T = {gaConfig.numIterations}")
+        plt.title(f"Iteration 0\nVariant {config.variant} ({gaConfig.ascentVariant}): lr = {gaConfig.learningRate}, xDim = {config.xDim}, k = {config.k},L = {config.L}, T = {gaConfig.numIterations}")
         fig.text(.5, .05, "\n" + "Obtained eigenvectors (blue): " + str(np.around(Vs[-1],decimals=3)) + "\n" + "Expected eigenvector (red): " + str(np.around(EVs[:,pos],decimals=3)), ha='center')
         ax.set_xlabel('X-axis')
         ax.set_ylabel('Y-axis')
@@ -51,6 +51,7 @@ def visualiseResults(X):
         ax.set_zlim(minZ-0.1, maxZ+0.1)
 
         def update(i):
+            plt.title(f"Iteration {i*25}\nVariant {config.variant} ({gaConfig.ascentVariant}): lr = {gaConfig.learningRate}, xDim = {config.xDim}, k = {config.k},L = {config.L}, T = {gaConfig.numIterations}")
             nonlocal quiver 
             quiver.remove()
             quiver = ax.quiver(0, 0, 0, V[i][0], V[i][1], V[i][2])

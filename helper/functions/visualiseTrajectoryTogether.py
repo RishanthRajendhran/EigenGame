@@ -12,7 +12,7 @@ import helper.config.gradientAscentConfig as gaConfig
 #   Shows the visualisations to the user
 #   Returns nothing 
 def visualiseTrajectoryTogether(X):
-    Vs = np.load(f"Vs_modified_{config.variant}_{gaConfig.ascentVariant}.npy")
+    Vs = np.load(f"./Vs/Vs_{config.xDim}_modified_{config.variant}_{gaConfig.ascentVariant}.npy")
     if Vs[-1].shape[0] != 3:
         print("Only 3D visualisations allowed!")
         return
@@ -48,7 +48,7 @@ def visualiseTrajectoryTogether(X):
     # alpha controls opacity
     ax.plot_surface(x, y, z, color="lightgray", alpha=0.3)
 
-    plt.title(f"Variant {config.variant} ({gaConfig.ascentVariant}): lr = {gaConfig.learningRate}, xDim = {config.xDim}, k = {config.k},L = {config.L}, T = {gaConfig.numIterations}")
+    plt.title(f"Iteration 0\nVariant {config.variant} ({gaConfig.ascentVariant}): lr = {gaConfig.learningRate}, xDim = {config.xDim}, k = {config.k},L = {config.L}, T = {gaConfig.numIterations}")
     ax.set_xlabel('X-axis')
     ax.set_ylabel('Y-axis')
     ax.set_zlabel('Z-axis')
@@ -68,6 +68,7 @@ def visualiseTrajectoryTogether(X):
     # ax.set_ylim(minY-0.1, maxY+0.1)
     # ax.set_zlim(minZ-0.1, maxZ+0.1)
     def update(i):
+        plt.title(f"Iteration {i*25}\nVariant {config.variant} ({gaConfig.ascentVariant}): lr = {gaConfig.learningRate}, xDim = {config.xDim}, k = {config.k},L = {config.L}, T = {gaConfig.numIterations}")
         nonlocal quivers
         for quiver in quivers:
             quiver.remove()
@@ -75,12 +76,16 @@ def visualiseTrajectoryTogether(X):
         for z in range(Vs[-1].shape[1]):
             quivers.append(ax.quiver(0, 0, 0, Vs[i][:,z][0], Vs[i][:,z][1], Vs[i][:,z][2],color="C"+str(z)))
             if i!=0:
+                # ax.text(Vs[i-1][:,z][0], Vs[i-1][:,z][1], Vs[i-1][:,z][2], f"{z}Point{i}")s
                 a = Vs[i-1][:,z]
                 a /= np.linalg.norm(a)
                 b = Vs[i][:,z]
                 b /= np.linalg.norm(b)
                 arc = fns.slerp(a, b)
-                plt.plot(arc[:,0], arc[:,1], arc[:,2], color="C"+str(z))
+                if "-markPoints" in sys.argv:
+                    plt.plot(arc[:,0], arc[:,1], arc[:,2], color="C"+str(z), marker="x", markevery=[0,-1])
+                else:
+                    plt.plot(arc[:,0], arc[:,1], arc[:,2], color="C"+str(z))
     ani = FuncAnimation(fig, update, frames=np.arange(len(Vs)), interval=visualisationSpeed, repeat=False)
     if "-saveMode" not in sys.argv:
         plt.show()

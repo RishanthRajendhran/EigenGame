@@ -12,7 +12,7 @@ import helper.config.gradientAscentConfig as gaConfig
 #   Shows the visualisations to the user
 #   Returns nothing 
 def visualiseTrajectory(X):
-    Vs = np.load(f"Vs_{config.variant}_{gaConfig.ascentVariant}.npy")
+    Vs = np.load(f"./Vs/Vs_{config.xDim}_{config.variant}_{gaConfig.ascentVariant}.npy")
     if Vs[-1].shape[0] != 3:
         print("Only 3D visualisations allowed!")
         return
@@ -25,7 +25,7 @@ def visualiseTrajectory(X):
     EVs = np.around(fns.getEigenVectors(X),decimals=3)
     EVs = fns.rearrange(EVs, Vs[-1])
     for pos in range(Vs[-1].shape[1]):
-        Vs = np.load(f"Vs{pos}_{config.variant}_{gaConfig.ascentVariant}.npy")
+        Vs = np.load(f"./Vs/Vs_{config.xDim}_{pos}_{config.variant}_{gaConfig.ascentVariant}.npy")
         V = []
         # minX, minY, minZ = 0, 0, 0
         # maxX, maxY, maxZ = 0, 0, 0
@@ -56,7 +56,7 @@ def visualiseTrajectory(X):
         arc1 = fns.slerp(a1, b1)
         plt.plot(arc1[:,0], arc1[:,1], arc1[:,2], color="r")
 
-        plt.title(f"Variant {config.variant} ({gaConfig.ascentVariant}): lr = {gaConfig.learningRate}, xDim = {config.xDim}, k = {config.k},L = {config.L}, T = {gaConfig.numIterations}")
+        plt.title(f"Iteration 0\nVariant {config.variant} ({gaConfig.ascentVariant}): lr = {gaConfig.learningRate}, xDim = {config.xDim}, k = {config.k},L = {config.L}, T = {gaConfig.numIterations}")
         fig.text(.5, .05, "\n" + "Obtained eigenvectors (blue): " + str(np.around(Vs[-1],decimals=3)) + "\n" + "Expected eigenvector (red): " + str(np.around(EVs[:,pos],decimals=3)), ha='center')
         ax.set_xlabel('X-axis')
         ax.set_ylabel('Y-axis')
@@ -68,6 +68,7 @@ def visualiseTrajectory(X):
         # ax.set_zlim(minZ-0.1, maxZ+0.1)
 
         def update(i):
+            plt.title(f"Iteration {i*25}\nVariant {config.variant} ({gaConfig.ascentVariant}): lr = {gaConfig.learningRate}, xDim = {config.xDim}, k = {config.k},L = {config.L}, T = {gaConfig.numIterations}")
             nonlocal quiver 
             quiver.remove()
             quiver = ax.quiver(0, 0, 0, V[i][0], V[i][1], V[i][2], color="b")
@@ -77,7 +78,10 @@ def visualiseTrajectory(X):
                 b = V[i]
                 b /= np.linalg.norm(b)
                 arc = fns.slerp(a, b)
-                plt.plot(arc[:,0], arc[:,1], arc[:,2], color="b")
+                if "-markPoints" in sys.argv:
+                    plt.plot(arc[:,0], arc[:,1], arc[:,2], color="b", marker="x", markevery=[0,-1])
+                else: 
+                    plt.plot(arc[:,0], arc[:,1], arc[:,2], color="b")
         ani = FuncAnimation(fig, update, frames=np.arange(len(V)), interval=visualisationSpeed, repeat=False)
         if "-saveMode" not in sys.argv:
             plt.show()

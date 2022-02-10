@@ -12,16 +12,16 @@ import helper.config.thresholdConfig as thConfig
 #   Shows the plots to the user
 #   Returns nothing 
 def analyseResults(X):
-    Vs = np.load(f"Vs_{config.variant}_{gaConfig.ascentVariant}.npy")
-    iterTimes = np.load(f"iterTimes_{config.variant}_{gaConfig.ascentVariant}.npy")
+    Vs = np.load(f"./Vs/Vs_{config.xDim}_{config.variant}_{gaConfig.ascentVariant}.npy")
+    iterTimes = np.load(f"./iterTimes/iterTimes_{config.xDim}_{config.variant}_{gaConfig.ascentVariant}.npy")
 
     #The following imports should be avoided as these files do not quite capture the 
     #ways in which the different variants progress, in the sense that these files
     #might not show the redundant steps made by the players after they have converged
     #which is an artifact of the variant (a/b/c) and such plots might not be useful
     #to make comparisons between variants
-    # Vs = np.load(f"Vs_modified_{config.variant}_{gaConfig.ascentVariant}.npy")
-    # iterTimes = np.load(f"iterTimes_modified_{config.variant}_{gaConfig.ascentVariant}.npy")
+    # Vs = np.load(f"./Vs/Vs_{config.xDim}_modified_{config.variant}_{gaConfig.ascentVariant}.npy")
+    # iterTimes = np.load(f"./iterTimes/iterTimes_modified_{config.variant}_{gaConfig.ascentVariant}.npy")
     
     EVs = np.around(fns.getEigenVectors(X),decimals=3)
     EVs = fns.rearrange(EVs, Vs[-1])
@@ -36,7 +36,7 @@ def analyseResults(X):
     print("\nEigenVectors obtained through numpy:")
     print(np.around(EVs,decimals=3))
 
-    plt.plot(diffs[:min(config.stopIteration, len(diffs))])
+    plt.plot(diffs[:len(diffs)])
     plt.xlabel("Iterations")
     plt.ylabel("Distance")
     plt.title(f"Variant {config.variant} ({gaConfig.ascentVariant}): lr = {gaConfig.learningRate}, xDim = {config.xDim}, k = {config.k},L = {config.L}, T = {gaConfig.numIterations}")
@@ -45,7 +45,7 @@ def analyseResults(X):
     if "-saveMode" not in sys.argv:
         plt.show()
     plt.clf()
-    plt.plot(iterTimes[:min(config.stopIteration, len(diffs))], diffs[:min(config.stopIteration, len(diffs))])
+    plt.plot(iterTimes[:len(diffs)], diffs[:len(diffs)])
     plt.xlabel("Time elapsed (s)")
     plt.ylabel("Distance")
     plt.title(f"Variant {config.variant} ({gaConfig.ascentVariant}): lr = {gaConfig.learningRate}, xDim = {config.xDim}, k = {config.k},L = {config.L}, T = {gaConfig.numIterations}")

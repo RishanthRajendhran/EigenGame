@@ -12,7 +12,7 @@ import helper.config.gradientAscentConfig as gaConfig
 #   Shows the visualisations to the user
 #   Returns nothing 
 def visualiseResultsTogether(X):
-    Vs = np.load(f"Vs_modified_{config.variant}_{gaConfig.ascentVariant}.npy")
+    Vs = np.load(f"./Vs/Vs_{config.xDim}_modified_{config.variant}_{gaConfig.ascentVariant}.npy")
     if Vs[-1].shape[0] != 3:
         print("Only 3D visualisations allowed!")
         return
@@ -40,7 +40,7 @@ def visualiseResultsTogether(X):
                 maxZ = max(maxZ, v[2])
 
     fig, ax = plt.subplots(subplot_kw=dict(projection="3d"))
-    plt.title(f"Variant {config.variant} ({gaConfig.ascentVariant}): lr = {gaConfig.learningRate}, xDim = {config.xDim}, k = {config.k},L = {config.L}, T = {gaConfig.numIterations}")
+    plt.title(f"Iteration 0\nVariant {config.variant} ({gaConfig.ascentVariant}): lr = {gaConfig.learningRate}, xDim = {config.xDim}, k = {config.k},L = {config.L}, T = {gaConfig.numIterations}")
     ax.set_xlabel('X-axis')
     ax.set_ylabel('Y-axis')
     ax.set_zlabel('Z-axis')
@@ -53,6 +53,7 @@ def visualiseResultsTogether(X):
     ax.set_ylim(minY-0.1, maxY+0.1)
     ax.set_zlim(minZ-0.1, maxZ+0.1)
     def update(i):
+        plt.title(f"Iteration {i*25}\nVariant {config.variant} ({gaConfig.ascentVariant}): lr = {gaConfig.learningRate}, xDim = {config.xDim}, k = {config.k},L = {config.L}, T = {gaConfig.numIterations}")
         nonlocal quivers
         for quiver in quivers:
             quiver.remove()

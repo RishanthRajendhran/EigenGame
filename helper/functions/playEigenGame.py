@@ -16,11 +16,11 @@ def playEigenGame(X, T, k = config.k):
     V = None
     if "-continueEigenGame" in sys.argv:
         print("Continuing the last game...")
-        if os.path.exists(f"Vs_{config.variant}_{gaConfig.ascentVariant}.npy") and os.path.isfile(f"Vs_{config.variant}_{gaConfig.ascentVariant}.npy"):
-            V = np.load(f"Vs_{config.variant}_{gaConfig.ascentVariant}.npy")[-1]
+        if os.path.exists(f"./Vs/Vs_{config.xDim}_{config.variant}_{gaConfig.ascentVariant}.npy") and os.path.isfile(f"./Vs/Vs_{config.xDim}_{config.variant}_{gaConfig.ascentVariant}.npy"):
+            V = np.load(f"./Vs/Vs_{config.xDim}_{config.variant}_{gaConfig.ascentVariant}.npy")[-1]
         else:
             print("Last game not found!\nStarting new game...")
-            V = np.full((X.shape[1],config.k), 0.000001)
+            V = np.full((X.shape[1],config.k), 0.1)
             # V = np.ones((X.shape[1],config.k))
             # V = np.eye(X.shape[1],config.k)
             # V = np.random.rand(X.shape[1],config.k)
@@ -29,7 +29,7 @@ def playEigenGame(X, T, k = config.k):
             #     V = np.random.rand(X.shape[1],config.k)
             #     np.save("V_random_initialisation.npy",V)
     if "-continueEigenGame" not in sys.argv or V.shape != (X.shape[1], config.k):
-        V = np.full((X.shape[1],config.k), 0.000001)
+        V = np.full((X.shape[1],config.k), 0.1)
         # V = np.linalg.eig(X)[1]
         # V = np.array([
         #     [-0.686, 0.718, -0.113], 
@@ -129,11 +129,11 @@ def playEigenGame(X, T, k = config.k):
     Vs = np.array(Vs)
     iterTimes = np.array(iterTimes)
     if "-continueEigenGame" in sys.argv:
-        oldVs = np.load(f"Vs_{config.variant}_{gaConfig.ascentVariant}.npy")
-        oldIterTimes = np.load(f"iterTimes_{config.variant}_{gaConfig.ascentVariant}.npy")
+        oldVs = np.load(f"./Vs/Vs_{config.xDim}_{config.variant}_{gaConfig.ascentVariant}.npy")
+        oldIterTimes = np.load(f"./iterTimes/iterTimes_{config.xDim}_{config.variant}_{gaConfig.ascentVariant}.npy")
         Vs = np.append(oldVs, Vs.copy(),0)
         iterTimes = iterTimes + oldIterTimes[-1]
         iterTimes = np.append(oldIterTimes, iterTimes.copy(),0)
-    np.save(f"Vs_{config.variant}_{gaConfig.ascentVariant}.npy",Vs)
-    np.save(f"iterTimes_{config.variant}_{gaConfig.ascentVariant}.npy",iterTimes)
+    np.save(f"./Vs/Vs_{config.xDim}_{config.variant}_{gaConfig.ascentVariant}.npy",Vs)
+    np.save(f"./iterTimes/iterTimes_{config.xDim}_{config.variant}_{gaConfig.ascentVariant}.npy",iterTimes)
     return V

@@ -1,5 +1,6 @@
 from helper.imports.mainImports import *
 from helper.imports.functionImports import *
+import helper.config.gradientAscentConfig as gaConfig
 
 #Function to return the reward
 #Inputs
@@ -9,4 +10,4 @@ from helper.imports.functionImports import *
 #Outputs
 #   Returns a vector reward of dimension X.shape[0] x 1
 def getReward(X, V, i):
-    return (np.dot(X, V[:,i])).reshape(-1, 1)
+    return gaConfig.rewardCoefficient*(np.dot(X, V[:,i])).reshape(-1, 1)

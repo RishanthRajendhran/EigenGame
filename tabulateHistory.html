@@ -24,10 +24,14 @@
                     </th>
                 </tr>
             </table>
-            <!-- <script type="text/javascript" src="history.txt">
-                var mydata = JSON.parse(data);
-                console.log(mydata)
-            </script> -->
+            <script type="text/javascript">
+                alert("Hi");
+                var fs = require("fs")
+                fs.readFile("./history/history.json", function (error, content) {
+                    var data = JSON.parse(content);
+                    console.log(data.collection.length);
+                });
+            </script>
         </body>
     </head>
 </html>

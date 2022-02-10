@@ -11,8 +11,8 @@ import helper.config.gradientAscentConfig as gaConfig
 #   Shows the plots to the user
 #   Returns nothing 
 def analyseAngles(X):
-    Vs = np.load(f"Vs_{config.variant}_{gaConfig.ascentVariant}.npy")
-    iterTimes = np.load(f"iterTimes_{config.variant}_{gaConfig.ascentVariant}.npy")
+    Vs = np.load(f"./Vs/Vs_{config.xDim}_modified_{config.variant}_{gaConfig.ascentVariant}.npy")
+    iterTimes = np.load(f"./iterTimes/iterTimes_{config.xDim}_modified_{config.variant}_{gaConfig.ascentVariant}.npy")
     EVs = np.around(fns.getEigenVectors(X),decimals=3)
     EVs = fns.rearrange(EVs, Vs[-1])
     if "-postGameAnalysis" not in sys.argv:
@@ -31,8 +31,8 @@ def analyseAngles(X):
     angles = []
     elapsedTimes = []
     for col in range(Vs[0].shape[1]):
-        Vs = np.load(f"Vs{col}_{config.variant}_{gaConfig.ascentVariant}.npy")
-        iterTimes = np.load(f"iterTimes{col}_{config.variant}_{gaConfig.ascentVariant}.npy")
+        Vs = np.load(f"./Vs/Vs_{config.xDim}_{col}_{config.variant}_{gaConfig.ascentVariant}.npy")
+        iterTimes = np.load(f"./iterTimes/iterTimes_{config.xDim}_{col}_{config.variant}_{gaConfig.ascentVariant}.npy")
         angle = []
         elapsedTime = []
         for t in range(min(config.stopIterations[col], len(Vs))):

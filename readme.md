@@ -285,6 +285,14 @@
         </li>
         <li>
             <h6>
+                -markPoints
+            </h6>
+            <p>
+                Marks points in the trajectory visualisations using the 'x' marker 
+            </p>
+        </li>
+        <li>
+            <h6>
                 -highSpeed (default) / -mediumSpeed / -lowSpeed
             </h6>
             <p>

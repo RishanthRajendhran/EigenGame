@@ -12,7 +12,8 @@ import helper.config.thresholdConfig as thConfig
 #   containing the LCES at every iteration of the game. This array also gets saved as 
 #   "LCES_<config.variant>.npy" in the current working directory for purpose of future analysis. 
 def computeLCES(X):
-    Vs = np.load(f"Vs_{config.variant}_{gaConfig.ascentVariant}.npy")
+    Vs = np.load(f"./Vs/Vs_{config.xDim}_{config.variant}_{gaConfig.ascentVariant}.npy")
+    iterTimes = np.load(f"./iterTimes/iterTimes_{config.xDim}_{config.variant}_{gaConfig.ascentVariant}.npy")
     EVs = np.around(fns.getEigenVectors(X),decimals=3)
     EVs = fns.rearrange(EVs, Vs[-1])
     if "-postGameAnalysis" not in sys.argv:
@@ -36,8 +37,7 @@ def computeLCES(X):
         LCES_old = np.load(f"{fns.getLocation('./LCES')}LCES_{config.variant}_{gaConfig.ascentVariant}.npy")
         np.append(LCES_old, np.array(streakCounts), 0)
         np.save(f"{fns.getLocation('./LCES')}LCES_{config.variant}_{gaConfig.ascentVariant}.npy", LCES_old)  
-        iterTimes = np.load(f"./iterTimes_{config.variant}_{gaConfig.ascentVariant}.npy")
-        plt.plot(iterTimes[:min(config.stopIteration, len(LCES_old))], LCES_old[:min(config.stopIteration, len(LCES_old))])
+        plt.plot(iterTimes[:len(LCES_old)], LCES_old[:len(LCES_old)])
         plt.xlabel("Time elapsed (s)")
         plt.ylabel("LCES")
         plt.title(f"Variant {config.variant} ({gaConfig.ascentVariant}): lr = {gaConfig.learningRate}, xDim = {config.xDim}, k = {config.k},L = {config.L}, T = {gaConfig.numIterations}")
@@ -49,8 +49,7 @@ def computeLCES(X):
         return LCES_old 
     else:
         np.save(f"{fns.getLocation('./LCES')}LCES_{config.variant}_{gaConfig.ascentVariant}.npy", streakCounts) 
-        iterTimes = np.load(f"./iterTimes_{config.variant}_{gaConfig.ascentVariant}.npy")
-        plt.plot(iterTimes[:min(config.stopIteration, len(streakCounts))], streakCounts[:min(config.stopIteration, len(streakCounts))])   
+        plt.plot(iterTimes[:len(streakCounts)], streakCounts[:len(streakCounts)])   
         plt.xlabel("Time elapsed (s)")
         plt.ylabel("LCES")
         plt.title(f"Variant {config.variant} ({gaConfig.ascentVariant}): lr = {gaConfig.learningRate}, xDim = {config.xDim}, k = {config.k},L = {config.L}, T = {gaConfig.numIterations}")
